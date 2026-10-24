@@ -8,7 +8,7 @@ await mkdir(destination,{recursive:true});
 for(const entry of await readdir(destination)){
   if(!['.git','node_modules','.sites-source-state.json'].includes(entry))await rm(join(destination,entry),{recursive:true,force:true});
 }
-const files=['.gitignore','.openai','README.md','package.json','package-lock.json','index.html','tsconfig.json','vite.config.ts','vercel.json','src','shared','server','online','public','scripts','tests','drizzle','docs'];
+const files=['.gitignore','.github','.openai','README.md','package.json','package-lock.json','index.html','tsconfig.json','vite.config.ts','vercel.json','api','src','shared','server','online','public','scripts','tests','drizzle','docs'];
 for(const name of files){
   await cp(join(root,name),join(destination,name),{recursive:true,filter:path=>!path.endsWith('.tar.gz')&&!['assets.generated.json','narrator-source','elevenlabs-consent.png'].includes(basename(path))});
 }

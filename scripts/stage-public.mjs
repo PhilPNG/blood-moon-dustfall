@@ -3,7 +3,7 @@ import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const rootFiles = new Set(['.gitignore', 'README.md', 'package.json', 'package-lock.json', 'index.html', 'tsconfig.json', 'vite.config.ts', 'vercel.json', 'LICENSE']);
-const sourceDirectories = new Set(['src', 'shared', 'server', 'online', 'public', 'scripts', 'tests', 'drizzle']);
+const sourceDirectories = new Set(['src', 'shared', 'server', 'online', 'public', 'scripts', 'tests', 'drizzle', 'api']);
 const documentation = new Set(['docs/VERCEL.md', 'docs/MEDIA.md', 'docs/TESTING.md', 'docs/PLAYER_RECOVERY.md', 'docs/PARTY_SCENARIOS.md']);
 const workflow = new Set(['.github', '.github/workflows', '.github/workflows/ci.yml']);
 // These real gameplay captures were reviewed for credentials and story spoilers.

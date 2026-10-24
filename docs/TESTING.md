@@ -1,6 +1,8 @@
 # Testing Dustfall with friends
 
-Public site: https://alibi-mystery-party.honeyspark.chatgpt.site
+Public site: https://blood-moon-dustfall.vercel.app
+
+The original Sites host remains available and supplies the same durable room backend.
 
 ## Quick developer run
 
