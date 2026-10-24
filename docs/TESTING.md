@@ -58,3 +58,13 @@ Replace the origin with the public site for hosted verification. Scripts create 
 See `PARTY_SCENARIOS.md` for the timing/outage matrix, concurrent GM transitions, delayed recovery responses, missed new-game confirmations, and the local-only browser fault proxy. Refresh existing game tabs after deploying an update so they receive the newest client protections.
 
 `npm run dev` deliberately uses an in-memory local backend and restarts on source changes, clearing local rooms. For an uninterrupted local rehearsal, first build, then run `PORT=3001 npm start` and use that stable origin. The hosted site stores rooms in managed D1 and is not affected by local edits/restarts.
+
+
+## Party tools rehearsal
+
+1. In the GM lobby, open **Party check** and run the screen test. Both phones and TV receive the ten-second cue; the existing short clue film plays with test captions. Confirm audible sound and readable captions manually. Testing does not deal characters or consume a story cue.
+2. Open **Stage and sound**. Music starts off. Enable it, choose a volume, and enable Sound on the TV. Check that a second TV tab does not play a second score, that pausing/looking away stops it, and that speech lowers it.
+3. Enable the across-the-room layout. During investigation, spotlight a public card. Check the shared countdown and held act time, then clear it. No private clue is offered until its player publishes it.
+4. Use two real connected phones to see optional table-talk partners. Check a new act, a disconnected partner and dismiss/complete. No other player receives the private dossier and no points change.
+5. Open `/watch/CODE` in a clean phone/browser and choose Spanish or Portuguese. Check public evidence/captions and that there are no voting, dossier, recovery or GM takeover controls. Reload a spectator view in a browser that also has a saved private seat: it must still be public. Reset and use the ordinary join button when seats reopen.
+6. After the final reveal, open Party awards. Submit one complete ballot per real phone, with no self nomination. Only turnout should update on the TV. Reveal early using the GM confirmation, test a tie, and skip/reopen a fresh ballot. Reset must remove the old ballot while keeping stage preferences.

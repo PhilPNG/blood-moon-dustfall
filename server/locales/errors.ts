@@ -1,6 +1,15 @@
 /** Public validation messages only; never add secrets, tokens or database diagnostics here. */
 export type ErrorTranslation = { es: string; 'pt-BR': string };
 export const ERROR_TRANSLATIONS: Record<string, ErrorTranslation> = {
+  'This party awards ballot is closed.': { es: 'La votación de los premios de la fiesta está cerrada.', 'pt-BR': 'A votação dos prêmios da festa está encerrada.' },
+  'Only real players can vote for party awards.': { es: 'Solo los jugadores reales pueden votar por los premios de la fiesta.', 'pt-BR': 'Somente jogadores reais podem votar nos prêmios da festa.' },
+  'Your party awards ballot is already final.': { es: 'Tu voto para los premios de la fiesta ya es definitivo.', 'pt-BR': 'Seu voto para os prêmios da festa já é definitivo.' },
+  'Choose another roster member for every party award.': { es: 'Elige a otro integrante del reparto para cada premio de la fiesta.', 'pt-BR': 'Escolha outro integrante do elenco para cada prêmio da festa.' },
+  'Choose valid stage settings.': { es: 'Elige ajustes de escenario válidos.', 'pt-BR': 'Escolha configurações de palco válidas.' },
+  'Choose a whole music volume from 0 to 100.': { es: 'Elige un volumen de música entero de 0 a 100.', 'pt-BR': 'Escolha um volume de música inteiro de 0 a 100.' },
+  'Choose a public evidence card to spotlight.': { es: 'Elige una tarjeta de evidencia pública para destacar.', 'pt-BR': 'Escolha uma carta de evidência pública para destacar.' },
+  'Party awards need at least two characters and one real player.': { es: 'Los premios de la fiesta necesitan al menos dos personajes y un jugador real.', 'pt-BR': 'Os prêmios da festa precisam de pelo menos dois personagens e um jogador real.' },
+  'This party awards ballot has changed. Wait for the latest screen.': { es: 'La votación de los premios de la fiesta ha cambiado. Espera la pantalla actualizada.', 'pt-BR': 'A votação dos prêmios da festa mudou. Espere a tela atualizada.' },
   'Invalid game action context.': { es: 'El contexto de la acción no es válido.', 'pt-BR': 'O contexto da ação é inválido.' },
   'The game has moved on. Your action was not applied. Wait for the latest screen and try again.': { es: 'La partida ha avanzado. Tu acción no se aplicó. Espera a que se actualice la pantalla e inténtalo de nuevo.', 'pt-BR': 'O jogo avançou. Sua ação não foi aplicada. Espere a tela atualizar e tente novamente.' },
   'Choose a valid rehearsal mode.': { es: 'Elige un modo de ensayo válido.', 'pt-BR': 'Escolha um modo de ensaio válido.' },
@@ -94,6 +103,8 @@ export const ERROR_TRANSLATIONS: Record<string, ErrorTranslation> = {
 
 /** These are authored validator labels, never arbitrary request values. */
 export const VALIDATION_LABELS: Record<string, ErrorTranslation> = {
+  'party awards choices': { es: 'Las opciones de los premios de la fiesta no son válidas.', 'pt-BR': 'As escolhas dos prêmios da festa são inválidas.' },
+  'stage settings': { es: 'Los ajustes del escenario no son válidos.', 'pt-BR': 'As configurações do palco são inválidas.' },
   'room request': { es: 'La solicitud de sala no es válida.', 'pt-BR': 'A solicitação de sala é inválida.' },
   'join request': { es: 'La solicitud para entrar en la sala no es válida.', 'pt-BR': 'A solicitação para entrar na sala é inválida.' },
   name: { es: 'El nombre no es válido.', 'pt-BR': 'O nome é inválido.' },

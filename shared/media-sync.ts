@@ -1,6 +1,7 @@
 import type { MediaPlaybackReport, RoomView } from './types.js';
 import { cinematicEvent } from './cinematics.js';
 import { narrationEvent } from './narration.js';
+import { preflightEvent } from './stage-presentation.js';
 
 export const DISPLAY_LEASE_MS = 8_000;
 export const DISPLAY_CAPABILITY_MS = 15 * 60_000;
@@ -20,6 +21,8 @@ export function playbackEventKey(room: RoomView, key: string): string {
 }
 
 export function playbackMatchesRoom(room: RoomView, playback: MediaPlaybackReport): boolean {
+  const preflight = preflightEvent(room);
+  if (preflight && playback.kind === 'film' && playback.clipId === 'clue' && playback.eventKey === playbackEventKey(room, preflight.key)) return true;
   const film = cinematicEvent(room);
   if (playback.kind === 'film') return !!film && playback.eventKey === playbackEventKey(room, film.key) && (playback.clipId === film.clipId || (room.phase === 'investigation' && playback.clipId === 'clue'));
   if (playback.kind !== 'narration' || room.masterReady === false) return false;

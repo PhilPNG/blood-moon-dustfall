@@ -13,6 +13,8 @@ import './components/cinematics.css';
 import './components/phone-captions.css';
 import './components/recovery.css';
 import './attention.css';
+import './party-components.css';
+import './components/stage-features.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><LanguageProvider><App /></LanguageProvider></React.StrictMode>);
 

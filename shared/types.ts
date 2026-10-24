@@ -7,7 +7,12 @@ export interface MediaPlayback { eventKey: string; clipId: string; kind: 'film' 
 export type MediaPlaybackReport = Omit<MediaPlayback, 'updatedAt' | 'displayId'>;
 export interface DisplayCapability { code: string; displayId: string; token?: string; expiresAt: number; active: boolean }
 export interface Presentation { serial: number; eventKey: string; control: 'skip' | 'replay' }
-export interface Attention { id: number; eventKey: string; cue: 'phase' | 'clue' | 'timer-warning' | 'lobby'; endsAt: number | null; remainingMs: number }
+export interface Attention { id: number; eventKey: string; cue: 'phase' | 'clue' | 'timer-warning' | 'lobby' | 'preflight' | 'spotlight'; endsAt: number | null; remainingMs: number }
+export interface StageSettings { distanceMode: boolean; musicEnabled: boolean; musicVolume: number }
+export type PartyAwardCategory = 'poker-face' | 'in-character' | 'wild-accusation';
+export type PartyAwardChoices = Record<PartyAwardCategory, string>;
+export interface PartyAwardResult { category: PartyAwardCategory; tallies: Record<string, number>; winnerIds: string[] }
+export interface PartyAwards { id: number; status: 'voting' | 'revealed' | 'skipped'; submittedCount: number; eligibleCount: number; results?: PartyAwardResult[] }
 export interface Settings { rounds: number; roundSeconds: number; maxPlayers: number }
 export interface Role {
   name: string; gender: Gender; alignment: 'culprit' | 'innocent'; brief: string; objective: string;
@@ -33,6 +38,11 @@ export interface CaseSolution { headline: string; summary: string; method: strin
 export interface PlayerScore { playerId: string; score: number; correctAnswers: number; cluesShared: number; searches: number; correctAccusation: boolean }
 export interface Result { culpritId: string; tallies: Record<string, number>; caught: boolean; solution?: CaseSolution; scores?: PlayerScore[] }
 export interface RoomView {
+  stageSettings?: StageSettings;
+  spotlight?: { evidenceId: string; serial: number };
+  preflight?: { serial: number; completed: boolean };
+  displayConnected?: boolean;
+  partyAwards?: PartyAwards;
   attention?: Attention;
   actionEpoch?: number;
   serverNow?: number;
@@ -56,10 +66,17 @@ export interface RoomView {
     playerId: string; role?: Role; clues: Clue[]; votedFor: string | null; ready: boolean;
     search?: SearchResult; answeredOptionId?: string; suspicionId?: string | null; score?: number;
     previousAnswer?: PreviousAnswer;
+    partyAwardChoices?: PartyAwardChoices;
   };
   isMaster: boolean;
 }
 export type Action =
+  | { type: 'stage-settings'; settings: Partial<StageSettings> }
+  | { type: 'spotlight'; evidenceId: string | null }
+  | { type: 'preflight-test' }
+  | { type: 'awards-open' }
+  | { type: 'awards-reveal' | 'awards-skip'; awardsId: number }
+  | { type: 'award-vote'; awardsId: number; choices: PartyAwardChoices }
   | { type: 'settings'; settings: Partial<Settings> }
   | { type: 'lock'; locked: boolean }
   | { type: 'kick'; playerId: string }

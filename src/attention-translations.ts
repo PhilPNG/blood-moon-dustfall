@@ -11,7 +11,7 @@ type AttentionCopy = {
   synced: string;
   paused: string;
   reconnecting: string;
-  cues: Record<'phase' | 'clue' | 'timer-warning' | 'lobby', string>;
+  cues: Record<'phase' | 'clue' | 'timer-warning' | 'lobby' | 'preflight' | 'spotlight', string>;
 };
 
 export const attentionTranslations: Record<Language, AttentionCopy> = {
@@ -26,7 +26,7 @@ export const attentionTranslations: Record<Language, AttentionCopy> = {
     synced: 'Synced with the room',
     paused: 'Countdown paused',
     reconnecting: 'Reconnecting to the room',
-    cues: { phase: 'Next chapter', clue: 'New public evidence', 'timer-warning': 'Host announcement', lobby: 'Welcome to Dustfall' },
+    cues: { phase: 'Next chapter', clue: 'New public evidence', 'timer-warning': 'Host announcement', lobby: 'Welcome to Dustfall', preflight: 'Screen and sound check', spotlight: 'Evidence in the spotlight' },
   },
   es: {
     label: 'Momento en la pantalla compartida',
@@ -39,7 +39,7 @@ export const attentionTranslations: Record<Language, AttentionCopy> = {
     synced: 'Sincronizados con la sala',
     paused: 'Cuenta regresiva en pausa',
     reconnecting: 'Reconectando con la sala',
-    cues: { phase: 'Próximo capítulo', clue: 'Nueva prueba pública', 'timer-warning': 'Anuncio del anfitrión', lobby: 'Bienvenidos a Dustfall' },
+    cues: { phase: 'Próximo capítulo', clue: 'Nueva prueba pública', 'timer-warning': 'Anuncio del anfitrión', lobby: 'Bienvenidos a Dustfall', preflight: 'Prueba de pantalla y sonido', spotlight: 'Prueba destacada' },
   },
   'pt-BR': {
     label: 'Momento na tela compartilhada',
@@ -52,6 +52,6 @@ export const attentionTranslations: Record<Language, AttentionCopy> = {
     synced: 'Em sincronia com a sala',
     paused: 'Contagem pausada',
     reconnecting: 'Reconectando à sala',
-    cues: { phase: 'Próximo capítulo', clue: 'Nova evidência pública', 'timer-warning': 'Anúncio do anfitrião', lobby: 'Boas-vindas a Dustfall' },
+    cues: { phase: 'Próximo capítulo', clue: 'Nova evidência pública', 'timer-warning': 'Anúncio do anfitrião', lobby: 'Boas-vindas a Dustfall', preflight: 'Teste de tela e som', spotlight: 'Evidência em destaque' },
   },
 };

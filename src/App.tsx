@@ -1,4 +1,4 @@
-import { useLanguage, LanguageMenu } from './i18n';
+import { useLanguage, LanguageMenu, LanguagePicker } from './i18n';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, LoaderCircle, LockKeyhole, Monitor, Smartphone, Users, WifiOff } from 'lucide-react';
 import { claimMasterSession, createPhoneRoom, getSession, getPairing, clearPairing, forgetSession, updateSessionFromView, prepareDisplayRoom, request, RpcError, saveSession } from './client';
@@ -13,6 +13,10 @@ import { closePresence } from './presence';
 import { routeAnchor } from './route-anchor';
 import { publicJoinOrigin } from './join-origin';
 import { roomCommandPayload } from './room-command';
+import { audienceRoom, isPublicRoomRoute, roomSubscribePayload } from './audience-routing';
+import { WatchEntry } from './components/WatchEntry';
+import { SpectatorPanel } from './components/SpectatorPanel';
+import { watchCopy } from './watch-translations';
 import { DeveloperStart, RehearsalControls, FilmLibrary } from './components/Developer';
 
 const claimMemory = new Map<string, ClaimReceipt>();
@@ -34,7 +38,7 @@ function captureClaim(code: string): ClaimReceipt | undefined {
 }
 
 export default function App() {
-  const { t, language } = useLanguage();
+  const { t, language, hasChosenLanguage } = useLanguage();
   const [path, setPath] = useState(location.pathname);
   const [room, setRoom] = useState<RoomView>();
   const [connected, setConnected] = useState(navigator.onLine);
@@ -53,8 +57,9 @@ export default function App() {
   const code = rawCode.toUpperCase();
   const validCode = /^[A-Z]{4}$/.test(code);
   const mode = kind === 'master' || kind === 'host' || kind === 'dev' ? 'master' : 'player';
-  const session = getSession(mode, code);
-  const isRoomRoute = ['master', 'screen', 'play', 'dev'].includes(kind);
+  const publicRoute = isPublicRoomRoute(kind);
+  const session = publicRoute ? undefined : getSession(mode, code);
+  const isRoomRoute = ['master', 'screen', 'play', 'dev', 'watch'].includes(kind);
 
   const navigate = useCallback((next: string) => {
     const destination = new URL(next, location.origin);
@@ -78,7 +83,7 @@ export default function App() {
       const anchor = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
       if (!anchor || anchor.target || anchor.hasAttribute('download')) return;
       const url = new URL(anchor.href, location.origin);
-      if (url.origin !== location.origin || !(url.pathname === '/' || /^\/(?:join|play|master|recover|host|dev|films|screen|cast|party-kit)(?:\/|$)/.test(url.pathname))) return;
+      if (url.origin !== location.origin || !(url.pathname === '/' || /^\/(?:join|play|master|recover|host|dev|films|screen|watch|cast|party-kit)(?:\/|$)/.test(url.pathname))) return;
       if (url.pathname === location.pathname && url.hash) return;
       event.preventDefault(); navigate(url.pathname + url.search + url.hash);
     };
@@ -93,12 +98,12 @@ export default function App() {
   useEffect(() => {
     const changed = (event: Event) => {
       if (event instanceof StorageEvent && event.key && !event.key.startsWith('alibi:')) return;
-      if (getSession(mode, code)?.token !== session?.token) { setRoom(undefined); setError(''); }
+      if (!publicRoute && getSession(mode, code)?.token !== session?.token) { setRoom(undefined); setError(''); }
       refreshSession(value => value + 1);
     };
     window.addEventListener('alibi:sessions-changed', changed); window.addEventListener('storage', changed);
     return () => { window.removeEventListener('alibi:sessions-changed', changed); window.removeEventListener('storage', changed); };
-  }, [mode, code, session?.token]);
+  }, [mode, code, session?.token, publicRoute]);
   useEffect(() => {
     if (kind !== 'host' && location.hash) document.getElementById(routeAnchor(location.hash))?.scrollIntoView();
   }, [path]);
@@ -140,16 +145,16 @@ export default function App() {
   }, [kind, code, validCode, claimRetry, navigate]);
 
   useEffect(() => {
-    if (!isRoomRoute || !validCode || (kind !== 'screen' && !session)) return;
+    if (!isRoomRoute || !validCode || (!publicRoute && !session)) return;
     let alive = true;
     let terminal = false;
     let presenceClosed = false;
     const clientId = crypto.randomUUID();
-    const currentIdentity = () => activePath.current === path && (kind === 'screen' || getSession(mode, code)?.token === session?.token);
+    const currentIdentity = () => activePath.current === path && (publicRoute || getSession(mode, code)?.token === session?.token);
     const stopPresence = () => {
       if (presenceClosed) return;
       presenceClosed = true;
-      if (session && kind !== 'screen') closePresence({ code, token: session.token, clientId });
+      if (session && !publicRoute) closePresence({ code, token: session.token, clientId });
     };
     let inFlight = false;
     let refreshAfter = false;
@@ -163,14 +168,14 @@ export default function App() {
       if (inFlight) { refreshAfter = true; return; }
       inFlight = true;
       try {
-        const view = await request<RoomView>('room:subscribe', { code, language: viewLanguage, ...(kind === 'screen' ? {} : { token: session?.token, clientId }) });
+        const view = await request<RoomView>('room:subscribe', roomSubscribePayload(kind, code, viewLanguage, session, clientId));
         if (!alive || !currentIdentity()) return;
-        receive(view, path, viewLanguage, kind === 'screen' ? undefined : session?.token); setConnected(true); setError('');
+        receive(view, path, viewLanguage, publicRoute ? undefined : session?.token); setConnected(true); setError('');
       } catch (cause) {
         if (!alive || !currentIdentity()) return;
         if (cause instanceof RpcError && cause.terminal) {
           terminal = true; setRoom(undefined);
-          if (kind !== 'screen') forgetSession(mode, code);
+          if (!publicRoute) forgetSession(mode, code);
         } else setConnected(false);
         setError(cause instanceof Error ? cause.message : t("Couldn’t reach your room. Check your internet connection."));
       } finally {
@@ -183,7 +188,7 @@ export default function App() {
     document.addEventListener('visibilitychange', refresh); window.addEventListener('online', refresh); window.addEventListener('pagehide', stopPresence);
     void poll();
     return () => { alive = false; stopPresence(); if (timer) clearTimeout(timer); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('online', refresh); window.removeEventListener('pagehide', stopPresence); };
-  }, [path, code, kind, mode, validCode, isRoomRoute, session?.token, viewLanguage, receive, presenceGeneration]);
+  }, [path, code, kind, mode, validCode, isRoomRoute, session?.token, viewLanguage, receive, presenceGeneration, publicRoute]);
   useEffect(() => {
     if (kind === 'screen' && room?.masterReady) clearPairing(code);
   }, [kind, code, room?.masterReady]);
@@ -236,6 +241,8 @@ export default function App() {
   const joined = (joinedSession: Session) => { saveSession('player', joinedSession); if (activePath.current === path) navigate(`/play/${joinedSession.code}`); };
 
   const recovered = (sessionKind: SessionKind, restored: Session) => { saveSession(sessionKind, restored); const current = getSession(sessionKind, restored.code); if (activePath.current === path && current) navigate(`/${sessionKind === 'master' ? 'master' : 'play'}/${current.code}`); };
+  if (kind === 'watch' && !hasChosenLanguage) return <div className="connection-page"><LanguagePicker/></div>;
+  if (kind === 'watch' && !validCode) return <WatchEntry initialCode={code} onOpen={navigate}/>;
   if (kind === 'films') return <FilmLibrary/>;
   if (kind === 'dev' && !validCode) return <DeveloperStart connected={connected} creating={creating} error={error} onCreate={createRehearsal} onOpen={navigate}/>;
   if (kind === 'recover') return <RecoverSessionForm initialCode={code} initialKind={new URLSearchParams(location.search).get('kind') === 'master' ? 'master' : 'player'} onRecovered={recovered}/>;
@@ -243,14 +250,15 @@ export default function App() {
   if ((kind === 'screen' || kind === 'master') && !validCode) return <div className="connection-page route-entry-page"><a className="wordmark" href="/">ALIBI<span>®</span></a><CodeLookup mode={kind} invalid={!!code} onOpen={navigate}/><a className="text-button" href="/">{t("Back home")}<ArrowLeft size={16}/></a></div>;
   if (kind === 'host' && !validCode) return <div className="connection-page"><a className="wordmark" href="/">ALIBI<span>®</span></a><div className="connection-message"><h1>{t("That pairing address is incomplete.")}</h1><p>{t("A pairing link needs a four-letter room code. Scan the game master QR again, or create a room on this phone.")}</p><a className="button primary" href="/host">{t("Host on this phone")}<Smartphone size={16}/></a><a className="button secondary" href="/">{t("Back home")}</a></div></div>;
   if (kind === 'join' || (kind === 'play' && !session && !error)) return <Join initialCode={code} onJoined={joined} />;
-  if (kind === 'host' || (isRoomRoute && !room)) return <div className="connection-page"><a className="wordmark" href="/">ALIBI<span>®</span></a><div className="connection-message">{error ? <><WifiOff size={36}/><h1>{t("We lost the trail.")}</h1><p role="alert">{t(error)}</p>{kind === 'host' && <button className="button secondary" onClick={() => setClaimRetry(value => value + 1)}>{t("Try pairing again")}</button>}<button className="button primary" onClick={() => navigate(kind === 'play' ? `/join/${code}` : '/')}>{t(kind === 'play' ? 'Back to join' : 'Back to home')}<ArrowLeft size={16}/></button></> : (kind === 'master' || kind === 'dev') && !session ? <><h1>{t("Keep the controls close.")}</h1><p>{t("Open this room on the phone that created or paired with it. Your private controls are saved in that browser.")}</p><button className="button primary" onClick={() => navigate('/')}>{t("Back to home")}</button></> : <><LoaderCircle className="spin" size={30}/><h1>{kind === 'host' ? t("Pairing your phone…") : t("Connecting the dots…")}</h1><p>{kind === 'host' ? t("Your private game master controls are on their way.") : t('Finding room {code}. Keep this window open.', { code })}</p></>}{validCode && kind !== 'screen' && <><a className="recovery-text-link" href={`/recover/${code}?kind=${mode}`}>{t('Using another phone? Recover your access')}<ArrowUpRight size={16}/></a><SavedGames code={code}/></>}</div></div>;
+  if (kind === 'host' || (isRoomRoute && !room)) return <div className="connection-page"><a className="wordmark" href="/">ALIBI<span>®</span></a><div className="connection-message">{error ? <><WifiOff size={36}/><h1>{t("We lost the trail.")}</h1><p role="alert">{t(error)}</p>{kind === 'host' && <button className="button secondary" onClick={() => setClaimRetry(value => value + 1)}>{t("Try pairing again")}</button>}<button className="button primary" onClick={() => navigate(kind === 'play' ? `/join/${code}` : '/')}>{t(kind === 'play' ? 'Back to join' : 'Back to home')}<ArrowLeft size={16}/></button></> : (kind === 'master' || kind === 'dev') && !session ? <><h1>{t("Keep the controls close.")}</h1><p>{t("Open this room on the phone that created or paired with it. Your private controls are saved in that browser.")}</p><button className="button primary" onClick={() => navigate('/')}>{t("Back to home")}</button></> : <><LoaderCircle className="spin" size={30}/><h1>{kind === 'host' ? t("Pairing your phone…") : t("Connecting the dots…")}</h1><p>{kind === 'host' ? t("Your private game master controls are on their way.") : t('Finding room {code}. Keep this window open.', { code })}</p></>}{validCode && !publicRoute && <><a className="recovery-text-link" href={`/recover/${code}?kind=${mode}`}>{t('Using another phone? Recover your access')}<ArrowUpRight size={16}/></a><SavedGames code={code}/></>}</div></div>;
   const upgradeNotice = room?.notice ? <aside className="room-upgrade-notice" role="status">{room.notice}</aside> : null;
   if (kind === 'dev' && room && !room.rehearsal) return <DeveloperStart connected={connected} creating={creating} error={t('This is a party room. Use its private phone controls, or create a separate rehearsal below.')} onCreate={createRehearsal} onOpen={navigate}/>;
   if (kind === 'dev' && room) return <div className="developer-run">{upgradeNotice}<RehearsalControls room={room} connected={connected} command={command}/><Display room={{ ...room, isMaster: false, me: undefined }} connected={connected} joinOrigin={joinOrigin} developerControls/></div>;
   if (kind === 'screen' && room) return <>{upgradeNotice}<Display room={room} connected={connected} joinOrigin={joinOrigin} pairing={getPairing(code)}/></>;
+  if (kind === 'watch' && room) return <>{upgradeNotice}<SpectatorPanel room={audienceRoom(room)} connected={connected} onJoin={() => navigate(`/join/${code}`)} onHome={() => navigate('/')}/></>;
   if (kind === 'master' && room) return <>{upgradeNotice}<Master room={room} connected={connected} command={command} joinOrigin={joinOrigin} onHome={() => navigate('/')}/></>;
   if (kind === 'play' && room) return <>{upgradeNotice}<Player room={room} command={command} connected={connected} onLeave={() => navigate(`/join/${code}`)} onMasterSession={restored => recovered('master', restored)} onReleased={() => { forgetSession('player', code); navigate(`/join/${code}`); }}/></>;
-  return <ArcadeHome page={kind === 'cast' ? 'cast' : kind === 'party-kit' ? 'kit' : 'home'} connected={connected} create={create} creating={creating} error={error} onJoin={() => navigate('/join')} homeExtra={<><CodeLookup mode="screen" onOpen={navigate}/><SavedGames/></>}/>;
+  return <ArcadeHome page={kind === 'cast' ? 'cast' : kind === 'party-kit' ? 'kit' : 'home'} connected={connected} create={create} creating={creating} error={error} onJoin={() => navigate('/join')} homeExtra={<><CodeLookup mode="screen" onOpen={navigate}/><a className="text-button" href="/watch">{watchCopy(language).home}<ArrowUpRight size={16}/></a><SavedGames/></>}/>;
 }
 
 function CodeLookup({ mode, invalid = false, onOpen }: { mode: 'screen' | 'master'; invalid?: boolean; onOpen: (path: string) => void }) {

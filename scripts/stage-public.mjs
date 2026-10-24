@@ -7,7 +7,7 @@ const sourceDirectories = new Set(['src', 'shared', 'server', 'online', 'public'
 const documentation = new Set(['docs/VERCEL.md', 'docs/MEDIA.md', 'docs/TESTING.md', 'docs/PLAYER_RECOVERY.md', 'docs/PARTY_SCENARIOS.md']);
 const workflow = new Set(['.github', '.github/workflows', '.github/workflows/ci.yml']);
 // These real gameplay captures were reviewed for credentials and story spoilers.
-const screenshots = new Set(['dustfall-live-home.png', 'dustfall-language-first.png', 'dustfall-stage.png', 'dustfall-live-voting.png', 'dustfall-attention-host.jpg', 'dustfall-attention-phone.jpg']);
+const screenshots = new Set(['dustfall-live-home.png', 'dustfall-language-first.png', 'dustfall-stage.png', 'dustfall-live-voting.png', 'dustfall-attention-host.jpg', 'dustfall-attention-phone.jpg', 'dustfall-party-awards.jpg']);
 
 /** An allowlist for a public repository, not the private Sites source export. */
 export function isPublicSourcePath(path) {

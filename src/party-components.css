@@ -1,0 +1,105 @@
+/* Shared phone/GM party tools use the existing Dustfall arcade palette. */
+.party-card {
+  --party-ink: #130c25;
+  --party-violet: #170e38;
+  --party-mint: #a5ffce;
+  --party-yellow: #ffe178;
+  --party-cream: #fff0cb;
+  --party-coral: #ff6b87;
+  color: var(--party-cream);
+  background: linear-gradient(135deg, #30205c, #21143f);
+  border: 2px solid #735797;
+  border-radius: 14px;
+  box-shadow: 4px 5px 0 var(--party-ink);
+  padding: 20px 18px;
+  margin: 0 0 24px;
+  min-width: 0;
+  width: 100%;
+  font: 400 13px/1.6 'DM Sans', sans-serif;
+  overflow-wrap: anywhere;
+}
+.party-card *, .party-mingle-restore { box-sizing: border-box; }
+.party-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.party-heading h2, .party-heading > span { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--party-mint); }
+.party-heading h2 { font: 800 27px/1.05 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); text-transform: uppercase; }
+.party-heading > span { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.party-heading svg { flex: none; }
+.party-card > h2 { margin: 0 0 6px; font: 800 31px/1.08 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); color: var(--party-yellow); text-transform: uppercase; }
+.party-card p { margin: 12px 0; }
+.party-card small, .party-secondary { color: #dccbf4; font-size: 11px; line-height: 1.6; }
+.party-card small { display: block; }
+.party-card .party-secondary { margin-top: 8px; }
+.party-icon { display: flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; padding: 8px; background: transparent; border: 0; color: var(--party-cream); border-radius: 8px; cursor: pointer; }
+.party-icon:hover { background: #fff0cb12; }
+.party-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; max-width: 100%; padding: 10px 14px; border: 2px solid var(--party-ink); border-radius: 9px; background: var(--party-mint); color: var(--party-ink); font: 800 20px/1.15 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); text-transform: uppercase; box-shadow: 0 3px 0 var(--party-ink); cursor: pointer; text-wrap: balance; }
+.party-button.secondary { background: #443268; color: var(--party-cream); border-color: #9b7abe; }
+.party-button:disabled { cursor: not-allowed; opacity: .45; }
+.party-button:hover:not(:disabled) { filter: brightness(1.08); }
+.party-card :is(button,input,select,summary):focus-visible, .party-mingle-restore:focus-visible { outline: 3px solid #ffe178; outline-offset: 4px; }
+.party-checks { display: grid; gap: 8px; margin: 18px 0 10px; }
+.party-check { display: flex; align-items: center; gap: 11px; min-height: 44px; width: 100%; padding: 6px 0; cursor: pointer; font-weight: 600; }
+.party-check input { width: 20px; height: 20px; min-width: 20px; margin: 0; accent-color: #a5ffce; }
+.party-check > span { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.party-check svg { flex: none; color: var(--party-mint); }
+.party-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; width: 100%; margin: 16px 0; color: var(--party-cream); font-size: 12px; font-weight: 600; }
+.party-field > span { display: flex; align-items: center; gap: 7px; }
+.party-field select { display: block; width: 100%; min-width: 0; max-width: 100%; min-height: 48px; padding: 10px 11px; color: var(--party-cream); background: var(--party-violet); border: 2px solid #9b7abe; border-radius: 8px; font: 400 16px/1.4 'DM Sans', sans-serif; text-overflow: ellipsis; }
+.party-field select:disabled { opacity: .45; }
+.party-divider { height: 1px; background: #9b7abe66; margin: 22px 0; }
+.party-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 11px; margin-top: 16px; }
+.party-error { color: var(--party-coral); border-left: 3px solid var(--party-coral); padding-left: 10px; }
+.party-status-list { display: grid; gap: 9px; padding: 0; margin: 16px 0 20px; list-style: none; }
+.party-status-list li { display: flex; align-items: center; gap: 8px; color: #dccbf4; }
+.party-status-list li[data-ready='true'] { color: var(--party-mint); }
+.party-status-list svg { flex: none; }
+.party-mingle { border-color: var(--party-mint); }
+.party-mingle.is-done { border-color: #735797; }
+.party-mingle.is-done .party-check { color: var(--party-mint); }
+.party-mingle-restore { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; padding: 10px; margin: 0 0 20px; border: 1px dashed #9b7abe; border-radius: 9px; background: #30205c88; color: #dccbf4; font: 400 12px/1.5 'DM Sans', sans-serif; cursor: pointer; }
+.party-awards { border-color: var(--party-yellow); }
+.party-awards .party-heading h2 { color: var(--party-yellow); }
+.party-award-participation { display: flex; align-items: center; gap: 7px; color: var(--party-mint); font-weight: 600; }
+.party-award-ballot fieldset { min-width: 0; padding: 0; margin: 0; border: 0; }
+.party-award-ballot .party-button { width: 100%; }
+.party-confirm { padding-top: 12px; border-top: 1px solid #9b7abe66; }
+.party-confirm h3, .party-award-receipt h3 { font: 800 27px/1.1 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); margin: 10px 0; color: var(--party-yellow); text-transform: uppercase; }
+.party-confirm dl, .party-award-receipt dl { margin: 14px 0; }
+.party-confirm dl > div, .party-award-receipt dl > div { display: flex; flex-direction: column; gap: 3px; margin-bottom: 13px; }
+.party-confirm dt, .party-award-receipt dt { color: #dccbf4; font-size: 11px; }
+.party-confirm dd, .party-award-receipt dd { color: var(--party-mint); margin: 0; font-weight: 600; }
+.party-award-receipt > svg { color: var(--party-mint); }
+.party-award-winners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+.party-award-winners article { padding: 17px 13px; min-width: 0; border: 1px solid #9b7abe; border-radius: 10px; background: #170e38; text-align: center; }
+.party-award-winners article > svg { color: var(--party-yellow); margin-bottom: 8px; }
+.party-award-winners article > span { display: block; color: var(--party-cream); font: 800 23px/1.05 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); text-transform: uppercase; }
+.party-award-winners h3 { margin: 16px 0 7px; color: var(--party-mint); font: 800 29px/1.1 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); }
+.party-award-winners details { margin-top: 16px; color: #dccbf4; text-align: left; font-size: 11px; }
+.party-award-winners summary { min-height: 35px; cursor: pointer; }
+.party-award-winners ul { list-style: none; margin: 8px 0 0; padding: 0; }
+.party-award-winners li { display: flex; gap: 10px; justify-content: space-between; margin: 7px 0; }
+.party-award-winners li strong { color: var(--party-yellow); font-variant-numeric: tabular-nums; }
+.party-awards--host { margin: 28px 0 0; padding: 26px; font-size: 16px; }
+.party-awards--host .party-heading h2 { font-size: 36px; }
+.party-awards--host .party-award-winners article > span { font-size: 28px; }
+.party-awards--host .party-award-winners h3 { font-size: clamp(28px, 3vw, 45px); }
+.party-spectator .phone-header { max-width: 600px; }
+.party-spectator .phone-main > .phone-kicker { color: #a5ffce; }
+.party-audience-guide .clock { display: inline-block; font: 800 35px/1 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif); color: var(--party-yellow); margin-bottom: 5px; }
+.party-audience-guide h2 { font-size: 30px; }
+.party-audience-cast ul { list-style: none; margin: 0; padding: 0; }
+.party-audience-cast li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #9b7abe44; }
+.party-audience-cast li > div { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.party-audience-cast li > div > span { font-size: 11px; color: #dccbf4; }
+.party-audience-cast li > small { flex: none; color: #ff6b87; font-size: 10px; }
+.party-audience-cast li > small.is-connected { color: #a5ffce; }
+.party-next-case { padding: 10px 0; color: #dccbf4; }
+.party-next-case h2 { color: #ffe178; font-size: 30px; }
+@media (max-width: 620px) {
+  .party-award-winners { grid-template-columns: 1fr; }
+  .party-actions { flex-direction: column; align-items: stretch; }
+  .party-actions > .party-button { width: 100%; }
+  .party-awards--host { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .party-card *, .party-mingle-restore { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

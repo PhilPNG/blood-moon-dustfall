@@ -48,6 +48,22 @@ A sole highest-voted culprit is caught. A tie or a wrong accusation lets the cul
 
 Smaller casts retain essential evidence. One- and two-act settings deliver the full evidence chain by the final act; optional fourth and fifth acts add reconstruction and reflection. Character-specific evidence variants allow the same cast to produce a different culprit.
 
+## Party tools
+
+The GM’s phone has a **Party check** before the deal: a synchronized screen test, live TV/guest status, and manual checks for audible sound, readable captions, room visibility and saved recovery access. A successful playback report proves the test finished; the host still confirms they heard it.
+
+**Stage and sound** controls an optional across-the-room TV layout and a public evidence spotlight. A spotlight gets the same ten-second look-up cue on the TV and phones, and holds the investigation clock. Only evidence already shared with everyone can be selected.
+
+**Background music is a toggle, off by default.** Enable it from the GM phone, choose a volume, and click Sound on the active TV. A quiet original synthesized western score plays on that TV alone, lowers under films/narration, and stops during pauses, countdowns, disconnection or a hidden tab. No music service or paid generation is required.
+
+During investigation, phones offer an optional **table talk** prompt to another connected real guest. Partners rotate across acts; finishing or hiding a suggestion changes no score and shares no secrets automatically.
+
+Late arrivals can open **`/watch/CODE`** or use the GM’s separate spectator link. This read-only phone view has its own language choice, public evidence and synchronized captions. Spectators occupy no seat, cannot vote or claim GM authority, and can join through the usual player flow in the next open lobby.
+
+After the verdict, the GM can open optional **Party awards**: Best Poker Face, Best in Character and Wildest Accusation. Real players submit one complete, final ballot without voting for themselves. Only turnout is public before reveal; all tied winners appear afterward. Awards never change the murder verdict or participation scores.
+
+![Live post-verdict party awards with all tied winners](docs/screenshots/dustfall-party-awards.jpg)
+
 ## Meet all twenty suspects
 
 Public identities are safe to browse. Private dossiers go only to the assigned player in the running game. The [cast gallery](https://blood-moon-dustfall.vercel.app/cast) has full public biographies, personalities and costume cues.
@@ -179,6 +195,8 @@ node scripts/verify-extra-minute.mjs http://localhost:3001
 node scripts/verify-recovery.mjs http://localhost:3001
 node scripts/verify-rehearsal.mjs http://localhost:3001
 node scripts/verify-scenarios.mjs http://localhost:3001
+node scripts/verify-attention.mjs http://localhost:3001
+node scripts/verify-party-features.mjs http://localhost:3001
 ```
 
 ## Architecture and deployment

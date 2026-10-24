@@ -1,14 +1,18 @@
-import { type Attention, type CaptionLanguage, type Clue, type DisplayCapability, type Gender, type MediaPlayback, type MediaPlaybackReport, type Phase, type Presentation, type PreviousAnswer, type QuestionResult, type Result, type Role, type RoomView, type SearchResult, type Session, type Settings } from '../shared/types.js';
+import { type Attention, type CaptionLanguage, type Clue, type DisplayCapability, type Gender, type MediaPlayback, type MediaPlaybackReport, type PartyAwardCategory, type PartyAwardChoices, type PartyAwards, type Phase, type Presentation, type PreviousAnswer, type QuestionResult, type Result, type Role, type RoomView, type SearchResult, type Session, type Settings, type StageSettings } from '../shared/types.js';
 import { attentionActive, attentionEventKey, attentionRemainingMs } from '../shared/attention.js';
 import { CHARACTERS, characterById, type CharacterProfile } from '../shared/characters.js';
-import { DISPLAY_CAPABILITY_MS, DISPLAY_LEASE_MS, MEDIA_DURATIONS, playbackMatchesRoom, PLAYBACK_STALE_MS } from '../shared/media-sync.js';
+import { DISPLAY_CAPABILITY_MS, DISPLAY_LEASE_MS, MEDIA_DURATIONS, playbackEventKey, playbackMatchesRoom, PLAYBACK_STALE_MS } from '../shared/media-sync.js';
+import { publicEvidence } from '../shared/evidence-browser.js';
+import { preflightEvent } from '../shared/stage-presentation.js';
 import { getAct, getQuestion, makeClue, privateDossier, searchClue, solution } from './story.js';
 
 const ROOM_LIFETIME = 12 * 60 * 60 * 1000;
 const VALID_GENDERS = new Set<Gender>(['any', 'woman', 'man', 'nonbinary']);
-const MASTER_ACTIONS = new Set(['settings', 'lock', 'kick', 'set-gender', 'set-role', 'start', 'advance', 'pause', 'resume', 'extend-time', 'reset', 'demo-fill', 'presentation', 'captions']);
+const MASTER_ACTIONS = new Set(['settings', 'lock', 'kick', 'set-gender', 'set-role', 'start', 'advance', 'pause', 'resume', 'extend-time', 'reset', 'demo-fill', 'presentation', 'captions', 'stage-settings', 'spotlight', 'preflight-test', 'awards-open', 'awards-reveal', 'awards-skip']);
+const DEFAULT_STAGE_SETTINGS: StageSettings = { distanceMode: false, musicEnabled: false, musicVolume: 25 };
+const AWARD_CATEGORIES: PartyAwardCategory[] = ['poker-face', 'in-character', 'wild-accusation'];
 type Player = { id: string; token: string; name: string; gender: Gender; ready: boolean; assignedRole?: string; role?: Role; clues: Clue[]; votedFor: string | null; demo: boolean; connections: Set<string>; score: number; correctAnswers: number; cluesShared: number; searches: number; search?: SearchResult; answeredOptionId?: string; previousAnswer?: PreviousAnswer; suspicionId: string | null };
-type Room = { actionEpoch?: number; attention?: Attention; attentionSerial?: number; attentionClaims?: { eventKey: string; clue?: Attention; 'timer-warning'?: Attention; lobby?: Attention }; attentionClueBaseline?: string[]; startsAt?: number | null; code: string; masterToken: string; createdAt: number; rehearsal: boolean; phase: Phase; round: number; settings: Settings; players: Map<string, Player>; isLocked: boolean; endsAt: number | null; remainingMs: number; isPaused: boolean; result?: Result; questionResult?: QuestionResult; notice?: string; gameId?: string; presentation?: Presentation; captionLanguage?: CaptionLanguage; captionSerial?: number; playback?: MediaPlayback; playbackEpoch?: number; display?: { id: string; token: string; expiresAt: number; leaseUntil: number; sequence: number } };
+type Room = { stageSettings?: StageSettings; spotlight?: RoomView['spotlight']; spotlightSerial?: number; preflight?: RoomView['preflight']; partyAwards?: { id: number; status: PartyAwards['status']; ballots: Record<string, PartyAwardChoices> }; partyAwardSerial?: number; actionEpoch?: number; attention?: Attention; attentionSerial?: number; attentionClaims?: { eventKey: string; clue?: Attention; 'timer-warning'?: Attention; lobby?: Attention }; attentionClueBaseline?: string[]; startsAt?: number | null; code: string; masterToken: string; createdAt: number; rehearsal: boolean; phase: Phase; round: number; settings: Settings; players: Map<string, Player>; isLocked: boolean; endsAt: number | null; remainingMs: number; isPaused: boolean; result?: Result; questionResult?: QuestionResult; notice?: string; gameId?: string; presentation?: Presentation; captionLanguage?: CaptionLanguage; captionSerial?: number; playback?: MediaPlayback; playbackEpoch?: number; display?: { id: string; token: string; expiresAt: number; leaseUntil: number; sequence: number } };
 type Connection = { code: string; token?: string };
 /** Private durable state: never send this snapshot to a browser. */
 type ArcadePlayerFields = 'score' | 'correctAnswers' | 'cluesShared' | 'searches' | 'search' | 'answeredOptionId' | 'suspicionId';
@@ -146,6 +150,10 @@ export class GameEngine {
       ...(room.presentation ? { presentation: room.presentation } : {}),
       captionLanguage: room.captionLanguage ?? 'off',
       captionSerial: room.captionSerial ?? 0,
+      stageSettings: { ...DEFAULT_STAGE_SETTINGS, ...room.stageSettings },
+      displayConnected: !!room.display && room.display.leaseUntil > this.now() && room.display.expiresAt > this.now(),
+      ...(room.spotlight ? { spotlight: room.spotlight } : {}),
+      ...(room.preflight ? { preflight: room.preflight } : {}),
       serverNow: this.now(),
       ...(room.attention ? { attention: room.attention } : {}),
       ...(room.playbackEpoch !== undefined ? { playbackEpoch: room.playbackEpoch } : {}),
@@ -168,7 +176,18 @@ export class GameEngine {
     }
     if (room.questionResult) view.questionResult = room.questionResult;
     if (room.result) view.result = room.result;
+    if (room.partyAwards) {
+      const { id, status, ballots } = room.partyAwards;
+      view.partyAwards = { id, status, submittedCount: Object.keys(ballots).length, eligibleCount: players.filter(player => !player.demo).length };
+      if (status === 'revealed') view.partyAwards.results = AWARD_CATEGORIES.map(category => {
+        const tallies: Record<string, number> = Object.fromEntries(players.map(player => [player.id, 0]));
+        for (const choices of Object.values(ballots)) tallies[choices[category]] += 1;
+        const highest = Math.max(0, ...Object.values(tallies));
+        return { category, tallies, winnerIds: highest > 0 ? Object.keys(tallies).filter(id => tallies[id] === highest) : [] };
+      });
+    }
     if (identity && identity !== 'master') view.me = { playerId: identity.id, ...(identity.role ? { role: identity.role } : {}), clues: identity.clues, votedFor: identity.votedFor, ready: identity.ready, ...(identity.search ? { search: identity.search } : {}), ...(identity.answeredOptionId !== undefined ? { answeredOptionId: identity.answeredOptionId } : {}), ...(identity.previousAnswer ? { previousAnswer: identity.previousAnswer } : {}), suspicionId: identity.suspicionId, score: identity.score };
+    if (view.me && room.partyAwards?.ballots[view.me.playerId]) view.me.partyAwardChoices = room.partyAwards.ballots[view.me.playerId];
     return structuredClone(view);
   }
 
@@ -229,6 +248,7 @@ export class GameEngine {
       this.masterCommand(room, type, action);
       if (phase !== `${room.phase}:${room.round}`) {
         delete room.playback;
+        delete room.spotlight;
         if (room.phase !== 'lobby') { this.resetAttentionClaims(room); this.beginAttention(room, 'phase'); }
       }
       return;
@@ -236,6 +256,18 @@ export class GameEngine {
     if (identity === 'master') throw new Error('Only players can do that.');
     if (room.isPaused) throw new Error('The game is paused.');
     switch (type) {
+      case 'award-vote': {
+        this.phase(room, 'results');
+        const awards = this.currentAwards(room, action.awardsId);
+        if (awards.status !== 'voting') throw new Error('This party awards ballot is closed.');
+        if (identity.demo) throw new Error('Only real players can vote for party awards.');
+        if (awards.ballots[identity.id]) throw new Error('Your party awards ballot is already final.');
+        const choices = object(action.choices, 'party awards choices');
+        if (Object.keys(choices).length !== AWARD_CATEGORIES.length || Object.keys(choices).some(key => !AWARD_CATEGORIES.includes(key as PartyAwardCategory)) ||
+          AWARD_CATEGORIES.some(category => typeof choices[category] !== 'string' || choices[category] === identity.id || !room.players.has(choices[category] as string))) throw new Error('Choose another roster member for every party award.');
+        awards.ballots[identity.id] = Object.fromEntries(AWARD_CATEGORIES.map(category => [category, choices[category]])) as PartyAwardChoices;
+        return;
+      }
       case 'ready':
         this.phase(room, 'roles');
         identity.ready = boolean(action.ready, 'ready status');
@@ -322,6 +354,9 @@ export class GameEngine {
     display.sequence = sequence;
     display.leaseUntil = now + DISPLAY_LEASE_MS;
     room.playback = { ...sample, playing: sample.playing && !room.isPaused, updatedAt: now, displayId: display.id };
+    const current = this.view(code), preflight = preflightEvent(current);
+    if (room.preflight && preflight && sample.kind === 'film' && sample.clipId === preflight.clipId &&
+      sample.eventKey === playbackEventKey(current, preflight.key) && !sample.playing && sample.position >= 3.5 && !attentionActive(room, now)) room.preflight.completed = true;
   }
 
   /** Public presentation authority can request only one eligible cue per current story context. */
@@ -504,6 +539,9 @@ export class GameEngine {
     delete room.attention;
     delete room.attentionClaims;
     delete room.attentionClueBaseline;
+    delete room.spotlight;
+    delete room.preflight;
+    delete room.partyAwards;
     for (const player of room.players.values()) {
       delete player.role;
       delete player.assignedRole;
@@ -553,6 +591,65 @@ export class GameEngine {
 
   private masterCommand(room: Room, type: string, action: Record<string, unknown>): void {
     switch (type) {
+      case 'stage-settings': {
+        const settings = object(action.settings, 'stage settings');
+        const next = { ...DEFAULT_STAGE_SETTINGS, ...room.stageSettings };
+        for (const [key, value] of Object.entries(settings)) {
+          if (key === 'distanceMode' || key === 'musicEnabled') {
+            if (typeof value !== 'boolean') throw new Error('Choose valid stage settings.');
+            next[key] = value;
+          } else if (key === 'musicVolume') {
+            if (typeof value !== 'number' || !Number.isInteger(value) || value < 0 || value > 100) throw new Error('Choose a whole music volume from 0 to 100.');
+            next.musicVolume = value;
+          } else throw new Error('Choose valid stage settings.');
+        }
+        room.stageSettings = next;
+        return;
+      }
+      case 'spotlight': {
+        if (action.evidenceId === null) {
+          delete room.spotlight;
+          if (room.attention?.cue === 'spotlight') {
+            const now = this.now(), remaining = this.remaining(room, now);
+            delete room.attention;
+            delete room.startsAt;
+            room.playbackEpoch = (room.playbackEpoch ?? 0) + 1;
+            delete room.playback;
+            room.remainingMs = remaining;
+            if (room.phase === 'investigation' && !room.isPaused) room.endsAt = now + remaining;
+          }
+          return;
+        }
+        if (typeof action.evidenceId !== 'string' || !publicEvidence(this.view(room.code)).some(item => item.key === action.evidenceId)) throw new Error('Choose a public evidence card to spotlight.');
+        if (room.spotlight?.evidenceId === action.evidenceId) return;
+        if (attentionActive(room, this.now()) || room.playback?.playing && this.now() - room.playback.updatedAt < PLAYBACK_STALE_MS) throw new Error('Wait for the current story presentation to finish.');
+        room.spotlightSerial = (room.spotlightSerial ?? 0) + 1;
+        room.spotlight = { evidenceId: action.evidenceId, serial: room.spotlightSerial };
+        this.beginAttention(room, 'spotlight');
+        return;
+      }
+      case 'preflight-test':
+        this.phase(room, 'lobby');
+        room.preflight = { serial: (room.preflight?.serial ?? 0) + 1, completed: false };
+        this.beginAttention(room, 'preflight');
+        return;
+      case 'awards-open':
+        this.phase(room, 'results');
+        if (room.partyAwards && room.partyAwards.status !== 'skipped') return;
+        if (room.players.size < 2 || ![...room.players.values()].some(player => !player.demo)) throw new Error('Party awards need at least two characters and one real player.');
+        room.partyAwardSerial = (room.partyAwardSerial ?? 0) + 1;
+        room.partyAwards = { id: room.partyAwardSerial, status: 'voting', ballots: {} };
+        return;
+      case 'awards-reveal':
+      case 'awards-skip': {
+        this.phase(room, 'results');
+        const awards = this.currentAwards(room, action.awardsId);
+        const next = type === 'awards-reveal' ? 'revealed' : 'skipped';
+        if (awards.status === next) return;
+        if (awards.status !== 'voting') throw new Error('This party awards ballot is closed.');
+        awards.status = next;
+        return;
+      }
       case 'presentation': {
         if (room.phase === 'lobby') throw new Error('Start the game before controlling its presentation.');
         const control = action.control;
@@ -762,5 +859,10 @@ export class GameEngine {
       }
       default: throw new Error('Unknown action.');
     }
+  }
+
+  private currentAwards(room: Room, id: unknown): NonNullable<Room['partyAwards']> {
+    if (typeof id !== 'number' || !Number.isSafeInteger(id) || id < 1 || !room.partyAwards || room.partyAwards.id !== id) throw new Error('This party awards ballot has changed. Wait for the latest screen.');
+    return room.partyAwards;
   }
 }
