@@ -11,15 +11,20 @@ import { narrationText } from './media-fallback';
 import { attentionEventKey } from '../../shared/attention';
 import { useAttentionCountdown } from '../useAttentionCountdown';
 import { attentionPermitReleased, groupedNarrationCue, type AttentionPermit, type AttentionRequester } from './media-attention';
+import { stageAudioEnabled } from './stage-audio';
 
 interface NarrationRequest { key: string; phaseKey: string; clipId: NarrationId }
-interface HostNarratorProps { room: RoomView; connected: boolean; sound: boolean; language: CaptionLanguage; blocked: boolean; incidentalBlocked?: boolean; evidenceReady: boolean; onPlayback?: PlaybackReporter; onAttention?: AttentionRequester; onBusyChange?: (busy: boolean) => void }
+export function narrationPresentationBusy(state: { mediaLeader: boolean; active: boolean; requesting: boolean; sound: boolean; phaseConsumed: boolean }): boolean {
+  return state.mediaLeader && (state.active || state.requesting || (state.sound && !state.phaseConsumed));
+}
+interface HostNarratorProps { room: RoomView; connected: boolean; sound: boolean; mediaLeader?: boolean; language: CaptionLanguage; blocked: boolean; incidentalBlocked?: boolean; evidenceReady: boolean; onPlayback?: PlaybackReporter; onAttention?: AttentionRequester; onBusyChange?: (busy: boolean) => void }
 function historyForTab() {
   try { return new CinematicHistory(window.sessionStorage, 'dustfall.narration.viewed.v1'); } catch { return new CinematicHistory(undefined, 'dustfall.narration.viewed.v1'); }
 }
 
 /** One host voice at a time, always behind the native film soundtrack. */
-export function HostNarrator({ room, connected, sound, language, blocked, incidentalBlocked = false, evidenceReady, onPlayback, onAttention, onBusyChange }: HostNarratorProps) {
+export function HostNarrator({ room, connected, sound: preferredSound, mediaLeader = true, language, blocked, incidentalBlocked = false, evidenceReady, onPlayback, onAttention, onBusyChange }: HostNarratorProps) {
+  const sound = stageAudioEnabled(preferredSound, mediaLeader);
   const event = narrationEvent(room), phaseKey = event.key;
   const attentionContext = attentionEventKey(room);
   const latestAttentionContext = useRef(attentionContext); latestAttentionContext.current = attentionContext;
@@ -33,7 +38,7 @@ export function HostNarrator({ room, connected, sound, language, blocked, incide
   const remaining = useCountdown(room.timer, room.serverNow);
   const { active, suspended } = narrationPlayback(request, phaseKey, { connected, sound, paused: room.timer.isPaused, cinematicBlocked: blocked });
   const phaseConsumed = history.has(`${phaseKey}:narration:${event.clipId}`);
-  const busy = !!active || requesting || (sound && !phaseConsumed);
+  const busy = narrationPresentationBusy({ mediaLeader, active: !!active, requesting, sound, phaseConsumed });
   useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
   useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   useEffect(() => { setPermit(null); setRequesting(false); claimRequest.current = null; retryAfter.current = 0; }, [attentionContext]);
@@ -71,7 +76,7 @@ export function HostNarrator({ room, connected, sound, language, blocked, incide
 }
 
 interface NarrationAudioProps { eventKey: string; clip?: NarrationClip; fallback: string; language: CaptionLanguage; suspended: boolean; onFinish: () => void; onPlayback?: PlaybackReporter }
-function NarrationAudio({ eventKey, clip, fallback, language, suspended, onFinish, onPlayback }: NarrationAudioProps) {
+export function NarrationAudio({ eventKey, clip, fallback, language, suspended, onFinish, onPlayback }: NarrationAudioProps) {
   const audio = useRef<HTMLAudioElement>(null);
   const [time, setTime] = useState(0), [started, setStarted] = useState(false), [textMode, setTextMode] = useState(!clip);
   useNativePlayback(audio, { eventKey, clipId: clip?.id || '', kind: 'narration' }, clip ? onPlayback : undefined, !suspended && !textMode);
@@ -103,7 +108,7 @@ function NarrationAudio({ eventKey, clip, fallback, language, suspended, onFinis
     return () => window.clearTimeout(timeout);
   }, [time, duration, suspended, onFinish]);
   return <>
-    {clip && <audio ref={audio} src={clip.src} preload="auto" onPlaying={() => setStarted(true)} onTimeUpdate={event => setTime(event.currentTarget.currentTime)} onEnded={onFinish} onError={() => { audio.current?.pause(); setTextMode(true); }} aria-label={clip.title}/>}
+    {clip && <audio ref={audio} src={clip.src} preload="auto" muted={suspended || textMode} onPlaying={() => setStarted(true)} onTimeUpdate={event => setTime(event.currentTarget.currentTime)} onEnded={onFinish} onError={() => { audio.current?.pause(); setTextMode(true); }} aria-label={clip.title}/>}
     {!suspended && <>
       <div className="narrator-speaking" role="status"><Mic2 aria-hidden="true"/><span>{textMode ? 'A note from your host' : 'Dustfall’s host'}</span><button onClick={onFinish} aria-label="Skip narration"><SkipForward aria-hidden="true"/> Skip voice</button></div>
       {caption.text && <div className={`narrator-caption${caption.transcript ? ' narrator-text-note' : ''}`} lang={caption.language}>{caption.text}</div>}

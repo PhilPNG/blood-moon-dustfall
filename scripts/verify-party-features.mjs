@@ -21,7 +21,7 @@ try {
   const first = await rpc('room:join', { code: master.code, name: 'Party guest one', gender: 'any' });
   const second = await rpc('room:join', { code: master.code, name: 'Party guest two', gender: 'any' });
   const publicView = language => rpc('room:subscribe', { code: master.code, language });
-  assert.deepEqual((await publicView('en')).stageSettings, { distanceMode: false, musicEnabled: false, musicVolume: 25 });
+  assert.deepEqual((await publicView('en')).stageSettings, { distanceMode: false, musicEnabled: true, musicVolume: 25 });
   await rejected(first, { type: 'stage-settings', settings: { musicEnabled: true } });
   await command(master, { type: 'stage-settings', settings: { distanceMode: true, musicEnabled: true, musicVolume: 50 } });
   await rejected(master, { type: 'stage-settings', settings: { musicVolume: 101 } });

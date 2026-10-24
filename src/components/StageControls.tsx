@@ -15,7 +15,7 @@ function Settings({ room, connected, disabled = false, onAction }: PartyActionPr
   const { run, busy, error } = usePartyAction(onAction);
   const id = useId();
   const countdown = useAttentionCountdown(room);
-  const settings = room.stageSettings ?? { distanceMode: false, musicEnabled: false, musicVolume: 25 };
+  const settings = room.stageSettings ?? { distanceMode: false, musicEnabled: true, musicVolume: 25 };
   const unavailable = !connected || disabled || busy;
   const playing = screenPlayback(room, connected, room.serverNow ?? NaN).status === 'playing';
   const spotlightBusy = unavailable || countdown > 0 || playing;

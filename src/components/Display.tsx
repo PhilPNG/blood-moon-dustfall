@@ -140,7 +140,7 @@ export function Display({ room: incomingRoom, connected, joinOrigin, pairing, de
   }, [claimAttention]);
   const attentionBlocked = useAttentionCountdown(room) > 0;
   const sceneKey = `${room.gameId ?? room.code}:${room.phase}:${room.round}`;
-  const { enabled: sound, toggle: toggleSound, context: soundContext } = useArcadeSound(`${sceneKey}|${room.attention?.id ?? ''}`, attentionBlocked || !connected || !visible);
+  const { enabled: sound, toggle: toggleSound, context: soundContext } = useArcadeSound(`${sceneKey}|${room.attention?.id ?? ''}`, attentionBlocked || !connected || !visible || !leader);
   const musicLevel = useStageMusic(soundContext, room, { sound, leader, connected, visible, mediaBusy: presentationBusy, attention: attentionBlocked, preflight: room.phase === 'lobby' && !!room.preflight && !room.preflight.completed && presentationBusy });
   const spotlight = spotlightEvidence(room, presentationBusy || attentionBlocked);
   useEffect(() => {

@@ -239,6 +239,74 @@ for (const backend of ['memory', 'sqlite'] as const) {
     await assert.rejects(f.execute('room:gm-accept', { code: master.code, token: players[1].token }, 'accept-handoff'), /code|revoked|session/i);
   });
 
+  test(`${backend}: a promoted GM phone keeps only its own retained seat connected through reset/recovery and expires on disconnect`, async () => {
+    const f = setup();
+    const { master, players } = await f.party();
+    const seat = players[1];
+    await f.command(master, { type: 'start' });
+    const before = (await f.view(seat, 'bea-player')).me;
+    await f.execute('room:gm-offer', { code: master.code, token: master.token, playerId: seat.playerId });
+    const promoted = await f.execute('room:gm-accept', { code: master.code, token: seat.token }) as Session;
+    await f.execute('room:unsubscribe', { code: master.code, token: seat.token, clientId: 'bea-player' });
+    let gm = await f.view(promoted, 'bea-master');
+    assert.equal(gm.gameMaster!.connected, true);
+    assert.equal(gm.players.find(player => player.id === seat.playerId)!.connected, true, 'the same authenticated phone still represents its retained character');
+    assert.equal(gm.players.filter(player => player.connected).length, 1);
+    assert.equal(gm.me, undefined, 'master presence cannot project a private player dossier');
+    const publicView = await f.view({ code: master.code });
+    assert.equal(Object.hasOwn(publicView.gameMaster!, 'linkedPlayerId'), false);
+    for (const session of [master, promoted, ...players]) assert.equal(JSON.stringify(publicView).includes(session.token), false);
+    assert.deepEqual((await f.view(seat, 'private-check')).me, before);
+    await f.execute('room:unsubscribe', { code: master.code, token: seat.token, clientId: 'private-check' });
+    const restarted = new OnlineGameService({ repository: f.repository, now: () => 100_000 });
+    const restored = await restarted.execute('room:subscribe', { code: master.code, token: promoted.token, clientId: 'bea-master' }) as RoomView;
+    assert.equal(restored.players.find(player => player.id === seat.playerId)!.connected, true);
+    await f.command(promoted, { type: 'reset' });
+    assert.equal((await f.view({ code: master.code })).players.find(player => player.id === seat.playerId)!.connected, true);
+    await f.execute('room:unsubscribe', { code: master.code, token: promoted.token, clientId: 'bea-master' });
+    await f.view(promoted, 'bea-master'); // A closed lifetime cannot revive either identity.
+    gm = await f.view({ code: master.code });
+    assert.equal(gm.gameMaster!.connected, false); assert.equal(gm.players.find(player => player.id === seat.playerId)!.connected, false);
+    await f.view(promoted, 'bea-master-reconnected');
+    assert.equal((await f.view({ code: master.code })).players.find(player => player.id === seat.playerId)!.connected, true);
+    f.setNow(115_000);
+    gm = await f.view({ code: master.code });
+    assert.equal(gm.gameMaster!.connected, false); assert.equal(gm.players.find(player => player.id === seat.playerId)!.connected, false);
+    const recovered = await f.execute('room:recover', { code: master.code, kind: 'master', recoveryCode: promoted.recoveryCode }) as Session;
+    gm = await f.view(recovered, 'replacement-gm');
+    assert.equal(gm.players.find(player => player.id === seat.playerId)!.connected, true);
+    await assert.rejects(f.view(promoted), /token|revoked/i);
+    await f.execute('room:leave', { code: master.code, token: seat.token, release: true });
+    const rejoined = await f.execute('room:join', { code: master.code, name: seat.name, gender: 'any' }) as Session;
+    assert.notEqual(rejoined.playerId, seat.playerId);
+    gm = await f.view(recovered, 'replacement-gm');
+    assert.equal(gm.gameMaster!.connected, true);
+    assert.equal(gm.players.find(player => player.id === rejoined.playerId)!.connected, false, 'a newly joined namesake cannot inherit the previous seat connection');
+  });
+
+  test(`${backend}: a second handoff replaces the linked seat and ordinary GM names never imply a player connection`, async () => {
+    const f = setup(); const { master, players } = await f.party();
+    await f.execute('room:gm-profile', { code: master.code, token: master.token, name: players[0].name });
+    assert.equal((await f.view(master, 'ordinary-gm')).players.some(player => player.connected), false);
+    await f.execute('room:gm-offer', { code: master.code, token: master.token, playerId: players[0].playerId });
+    const first = await f.execute('room:gm-accept', { code: master.code, token: players[0].token }) as Session;
+    assert.equal((await f.view(first, 'first-gm')).players[0].connected, true);
+    await f.execute('room:gm-offer', { code: master.code, token: first.token, playerId: players[1].playerId });
+    const second = await f.execute('room:gm-accept', { code: master.code, token: players[1].token }) as Session;
+    const current = await f.view(second, 'second-gm');
+    assert.equal(current.players[0].connected, false); assert.equal(current.players[1].connected, true);
+    await assert.rejects(f.view(first, 'first-gm'), /token|revoked/i);
+  });
+
+  test(`${backend}: an eligible takeover links the authenticated player's retained seat to its new GM presence`, async () => {
+    const f = setup(); const { master, players } = await f.party();
+    f.setNow(160_000); await f.view(players[0], 'takeover-player');
+    const recovered = await f.execute('room:gm-takeover', { code: master.code, token: players[0].token }) as Session;
+    await f.execute('room:unsubscribe', { code: master.code, token: players[0].token, clientId: 'takeover-player' });
+    const gm = await f.view(recovered, 'takeover-gm');
+    assert.equal(gm.players[0].connected, true); assert.equal(gm.players.slice(1).some(player => player.connected), false);
+  });
+
   test(`${backend}: concurrent recovery and targeted accepts have exactly one winner and stale receipts never restore authority`, async () => {
     const f = setup();
     const { master, players } = await f.party();

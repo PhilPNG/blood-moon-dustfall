@@ -50,12 +50,18 @@ test('a late TV test report never claims native completion or checks manual soun
     assert.doesNotMatch(html, /test film finished|película de prueba terminó|filme de teste terminou|checked=""/);
   }
 });
-test('stage controls expose quiet defaults and only already-public spotlight candidates', () => {
+test('legacy stage controls enable music at 25 percent while preserving an explicit off preference and public-only spotlight', () => {
   const html = render(StageControls, room({ isMaster: true }));
   assert.ok(html.includes('Enable Sound on the TV'));
   assert.match(html, /value="25" selected=""/);
   assert.ok(html.includes('value="shared:public"'));
-  assert.doesNotMatch(html, /PRIVATE_|shared:private|checked=""/);
+  assert.doesNotMatch(html, /PRIVATE_|shared:private/);
+  const checkboxes = [...html.matchAll(/<input\b[^>]*type="checkbox"[^>]*>/g)].map(match => match[0]);
+  assert.equal(checkboxes.length, 2);
+  assert.doesNotMatch(checkboxes[0], /checked=""/, 'Distance mode stays opt-in');
+  assert.match(checkboxes[1], /checked=""/, 'Missing stage settings use the new music-on default');
+  const muted = render(StageControls, room({ isMaster: true, stageSettings: { distanceMode: false, musicEnabled: false, musicVolume: 25 } }));
+  assert.doesNotMatch(muted, /checked=""/, 'An explicit saved music-off choice survives');
   assert.equal(render(StageControls, room()), '');
 });
 test('a live attention window disables GM spotlight while an expired window releases it', () => {

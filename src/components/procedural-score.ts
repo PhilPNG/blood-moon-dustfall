@@ -1,11 +1,12 @@
 import type { Phase, RoomView } from '../../shared/types';
 
 export interface MusicGate { sound: boolean; leader: boolean; connected: boolean; visible: boolean; mediaBusy: boolean; attention: boolean; preflight: boolean }
+const MAX_MUSIC_GAIN = .12;
 export function stageMusicGain(room: RoomView, gate: MusicGate): number {
   if (!room.stageSettings?.musicEnabled || !gate.sound || !gate.leader || !gate.connected || !gate.visible
     || room.timer.isPaused || gate.attention || gate.preflight) return 0;
   const volume = room.stageSettings.musicVolume;
-  const level = .045 * Math.max(0, Math.min(100, Number.isFinite(volume) ? volume : 25)) / 100;
+  const level = MAX_MUSIC_GAIN * Math.max(0, Math.min(100, Number.isFinite(volume) ? volume : 25)) / 100;
   return gate.mediaBusy ? level * .12 : level;
 }
 export interface ProceduralScore { setLevel: (level: number) => void; stop: () => void }
@@ -55,7 +56,7 @@ export function createProceduralScore(context: AudioContext, phase: Phase): Proc
   return {
     setLevel(level) {
       if (stopped) return;
-      const target = Math.max(0, Math.min(.045, Number.isFinite(level) ? level : 0));
+      const target = Math.max(0, Math.min(MAX_MUSIC_GAIN, Number.isFinite(level) ? level : 0));
       output.gain.cancelScheduledValues(context.currentTime);
       output.gain.setTargetAtTime(target, context.currentTime, target < currentLevel ? .035 : .2); currentLevel = target;
     },

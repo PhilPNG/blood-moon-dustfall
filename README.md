@@ -54,7 +54,7 @@ The GM’s phone has a **Party check** before the deal: a synchronized screen te
 
 **Stage and sound** controls an optional across-the-room TV layout and a public evidence spotlight. A spotlight gets the same ten-second look-up cue on the TV and phones, and holds the investigation clock. Only evidence already shared with everyone can be selected.
 
-**Background music is a toggle, off by default.** Enable it from the GM phone, choose a volume, and click Sound on the active TV. A quiet original synthesized western score plays on that TV alone, lowers under films/narration, and stops during pauses, countdowns, disconnection or a hidden tab. No music service or paid generation is required.
+**Background music is a toggle, on by default at 25%.** Adjust or disable it from the GM phone, and click Sound on the active TV once to allow browser audio. A quiet original synthesized western score plays on that TV alone, lowers under films/narration, and stops during pauses, countdowns, disconnection or a hidden tab. Only the active TV plays shared audio, including films and narration; passive mirrors remain silent. No music service or paid generation is required.
 
 During investigation, phones offer an optional **table talk** prompt to another connected real guest. Partners rotate across acts; finishing or hiding a suggestion changes no score and shares no secrets automatically.
 

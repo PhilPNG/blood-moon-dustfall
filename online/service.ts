@@ -13,7 +13,7 @@ const SESSION_EVENTS = new Set(['room:claim', 'room:join', 'room:recovery', 'roo
 const VIEW_EVENTS = new Set(['room:command', 'room:gm-profile', 'room:gm-offer']);
 type Receipt = { id: string; fingerprint: string; result?: Session | { left: true }; recoveryNonce?: string };
 type Presence = { playerId?: string; principal?: string; lastSeen: number };
-type GameMaster = Omit<GameMasterView, 'connected' | 'takeoverAt' | 'eligiblePlayerId'> & { lastSeen: number };
+type GameMaster = Omit<GameMasterView, 'connected' | 'takeoverAt' | 'eligiblePlayerId'> & { lastSeen: number; linkedPlayerId?: string };
 interface Envelope {
   room: RoomSnapshot;
   masterReady: boolean;
@@ -227,7 +227,7 @@ export class OnlineGameService {
         }
         const oldPrincipal = `master:${envelope.gameMaster.id}`;
         this.clearPresence(envelope, oldPrincipal);
-        envelope.gameMaster = { id: randomSecret().slice(0, 24), name: own.name!, epoch: envelope.gameMaster.epoch + 1, lastSeen: now };
+        envelope.gameMaster = { id: randomSecret().slice(0, 24), name: own.name!, epoch: envelope.gameMaster.epoch + 1, lastSeen: now, linkedPlayerId: own.playerId };
         delete envelope.recovery.master;
         ({ session: result, nonce: recoveryNonce } = await this.issueRecovery(engine.promoteMaster(code, data.token), envelope, stored.expiresAt, now));
         changed = true;
@@ -348,6 +348,7 @@ export class OnlineGameService {
     const valid = (id: string) => players.some(player => player.id === id && !player.isDemo);
     if (envelope.gameMaster.backupPlayerId && !valid(envelope.gameMaster.backupPlayerId)) delete envelope.gameMaster.backupPlayerId;
     if (envelope.gameMaster.handoff && (!valid(envelope.gameMaster.handoff.playerId) || envelope.gameMaster.handoff.expiresAt <= now)) delete envelope.gameMaster.handoff;
+    if (envelope.gameMaster.linkedPlayerId && !valid(envelope.gameMaster.linkedPlayerId)) delete envelope.gameMaster.linkedPlayerId;
     for (const key of new Set([...Object.keys(envelope.recovery), ...Object.keys(envelope.recoveryRevision)])) if (key !== 'master' && !players.some(player => player.id === key)) {
       delete envelope.recovery[key];
       delete envelope.recoveryRevision[key];
@@ -356,7 +357,7 @@ export class OnlineGameService {
   }
 
   private masterView(engine: GameEngine, envelope: Envelope, code: string, now: number): GameMasterView {
-    const { lastSeen, handoff, ...metadata } = envelope.gameMaster;
+    const { lastSeen, handoff, linkedPlayerId: _linkedPlayerId, ...metadata } = envelope.gameMaster;
     const connected = envelope.masterReady && this.connected(envelope, `master:${metadata.id}`, now);
     const players = engine.view(code).players.filter(player => !player.isDemo && this.connected(envelope, `player:${player.id}`, now));
     const candidate = metadata.backupPlayerId ? players.find(player => player.id === metadata.backupPlayerId) : players[0];
@@ -372,7 +373,8 @@ export class OnlineGameService {
     view.revision = revision;
     view.expiresAt = expiresAt;
     view.gameMaster = this.masterView(engine, envelope, code, now);
-    for (const player of view.players) player.connected = player.connected || this.connected(envelope, `player:${player.id}`, now);
+    for (const player of view.players) player.connected = player.connected || this.connected(envelope, `player:${player.id}`, now)
+      || envelope.gameMaster.linkedPlayerId === player.id && view.gameMaster.connected;
     return view;
   }
 }

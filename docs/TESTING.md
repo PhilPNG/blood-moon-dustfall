@@ -51,6 +51,8 @@ node scripts/verify-extra-minute.mjs http://localhost:3000
 node scripts/verify-recovery.mjs http://localhost:3000
 node scripts/verify-rehearsal.mjs http://localhost:3000
 node scripts/verify-scenarios.mjs http://localhost:3000
+node scripts/verify-attention.mjs http://localhost:3000
+node scripts/verify-party-features.mjs http://localhost:3000
 ```
 
 Replace the origin with the public site for hosted verification. Scripts create disposable twelve-hour rooms and print only safe counts/status. Unit tests also exercise independent restored engine/service instances and both memory/SQLite repositories with fake-clock15/60/120second boundaries and CAS races. HTTP scripts verify actual anonymous browser→API behavior, but do not replace real mobile/network/media browser testing.
@@ -63,7 +65,7 @@ See `PARTY_SCENARIOS.md` for the timing/outage matrix, concurrent GM transitions
 ## Party tools rehearsal
 
 1. In the GM lobby, open **Party check** and run the screen test. Both phones and TV receive the ten-second cue; the existing short clue film plays with test captions. Confirm audible sound and readable captions manually. Testing does not deal characters or consume a story cue.
-2. Open **Stage and sound**. Music starts off. Enable it, choose a volume, and enable Sound on the TV. Check that a second TV tab does not play a second score, that pausing/looking away stops it, and that speech lowers it.
+2. Open **Stage and sound**. Music starts enabled at 25%. Enable Sound on the TV once, check that music plays without a GM toggle, then test disabling it and changing volume. Check that a second TV tab does not play a second score, film, clue film or narrator voice, that pausing/looking away stops it, and that speech lowers it.
 3. Enable the across-the-room layout. During investigation, spotlight a public card. Check the shared countdown and held act time, then clear it. No private clue is offered until its player publishes it.
 4. Use two real connected phones to see optional table-talk partners. Check a new act, a disconnected partner and dismiss/complete. No other player receives the private dossier and no points change.
 5. Open `/watch/CODE` in a clean phone/browser and choose Spanish or Portuguese. Check public evidence/captions and that there are no voting, dossier, recovery or GM takeover controls. Reload a spectator view in a browser that also has a saved private seat: it must still be public. Reset and use the ordinary join button when seats reopen.

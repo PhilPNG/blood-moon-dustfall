@@ -15,6 +15,7 @@ import { attentionClueId, attentionPermitReleased, filmHistoryKey, resumeClueAtt
 import { useLanguage } from '../i18n';
 import { preflightCaptionLanguage, preflightEvent } from '../../shared/stage-presentation';
 import { stageCopy } from './stage-translations';
+import { stageAudioEnabled } from './stage-audio';
 
 const CAPTION_KEY = 'dustfall.captionLanguage';
 const isCaptionLanguage = (value: unknown): value is CaptionLanguage => value === 'off' || value === 'en' || value === 'es' || value === 'pt-BR';
@@ -188,8 +189,8 @@ export function CinematicPlayer({ room, connected, sound, toggleSound, children,
   const captions = <label className="cinema-caption-picker"><Captions aria-hidden="true"/><span className="cinema-sr-only">Closed captions</span><select aria-label="Closed captions" value={language} onChange={e => changeLanguage(e.target.value as CaptionLanguage)}><option value="off">CC Off</option><option value="en">English</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option></select></label>;
   return <>
     <div className="cinema-gameplay" inert={cinemaVisible}>{children(room.phase === 'results' && cinemaVisible)}</div>
-    {!test && <HostNarrator room={room} connected={connected} sound={sound} language={language} blocked={mainActive || awaitingEntry || !!pipClip || attentionBlocked} incidentalBlocked={clueRequesting || (cluePermit?.eventKey === attentionContext && evidenceReady !== eventKey)} evidenceReady={evidenceReady === eventKey && !!eventKey} onPlayback={onPlayback} onAttention={onAttention} onBusyChange={setNarratorBusy}/>}
-    <div className="cinema-stage-controls">{captions}{event && !test && <span className="cinema-replay-hint">{t('Replay films from the game master’s phone.')}</span>}</div>
+    {!test && <HostNarrator room={room} connected={connected} sound={sound} mediaLeader={mediaLeader} language={language} blocked={mainActive || awaitingEntry || !!pipClip || attentionBlocked} incidentalBlocked={clueRequesting || (cluePermit?.eventKey === attentionContext && evidenceReady !== eventKey)} evidenceReady={evidenceReady === eventKey && !!eventKey} onPlayback={onPlayback} onAttention={onAttention} onBusyChange={setNarratorBusy}/>}
+    <div className="cinema-stage-controls">{captions}{sound && !mediaLeader && <span className="cinema-audio-authority" role="status">{stageCopy[interfaceLanguage].audioSecondary}</span>}{event && !test && <span className="cinema-replay-hint">{t('Replay films from the game master’s phone.')}</span>}</div>
     {notice && <div className="cinema-notice" role="status"><Film aria-hidden="true"/>{notice}</div>}
     {cinemaVisible && <section ref={filmLayer} className="cinema-overlay" role={embeddedControls || attentionBlocked ? "region" : "dialog"} aria-modal={embeddedControls || attentionBlocked ? undefined : true} aria-label="Dustfall story film" onKeyDown={key => {
       if (key.key === 'Escape' && !(key.target instanceof HTMLSelectElement)) { key.preventDefault(); skipFilm(); }
@@ -200,19 +201,21 @@ export function CinematicPlayer({ room, connected, sound, toggleSound, children,
       if (key.shiftKey && document.activeElement === first) { key.preventDefault(); last.focus(); }
       else if (!key.shiftKey && document.activeElement === last) { key.preventDefault(); first.focus(); }
     }}>
-      {activeClip && active ? <CinematicVideo key={`${active.eventKey}:${active.serial}`} eventKey={playbackEventKey(room, active.eventKey)} clip={activeClip} language={preflightCaptionLanguage(room, language)} sound={sound} paused={room.timer.isPaused || !connected || attentionBlocked} onFinish={endMain} room={room} onPlayback={onPlayback}/> : <div className="cinema-loading" role="status"><Film/><span>{room.phase === 'results' ? 'The truth is coming…' : test ? stageCopy[interfaceLanguage].test : 'The next chapter begins…'}</span></div>}
+      {activeClip && active ? <CinematicVideo key={`${active.eventKey}:${active.serial}`} eventKey={playbackEventKey(room, active.eventKey)} clip={activeClip} language={preflightCaptionLanguage(room, language)} sound={sound} mediaLeader={mediaLeader} paused={room.timer.isPaused || !connected || attentionBlocked} onFinish={endMain} room={room} onPlayback={onPlayback}/> : <div className="cinema-loading" role="status"><Film/><span>{room.phase === 'results' ? 'The truth is coming…' : test ? stageCopy[interfaceLanguage].test : 'The next chapter begins…'}</span></div>}
       <div className="cinema-topbar"><span className="cinema-film-label"><Film aria-hidden="true"/>{test ? stageCopy[interfaceLanguage].test : activeClip?.title || 'Blood Moon over Dustfall'}</span><div>{!sound && <button onClick={() => void toggleSound()}><Volume2 aria-hidden="true"/> Enable sound</button>}<button className="cinema-skip" onClick={skipFilm}><SkipForward aria-hidden="true"/> Skip film</button></div></div>
+      {sound && !mediaLeader && <p className="cinema-audio-authority cinema-audio-authority--film" role="status">{stageCopy[interfaceLanguage].audioSecondary}</p>}
       {test && <div className="cinema-preflight-note">{stageCopy[interfaceLanguage].testConfirm}</div>}
       {room.timer.isPaused && <div className="cinema-paused" role="status"><Pause/> Film paused by the game master</div>}
       <div className="cinema-overlay-captions">{captions}</div>
     </section>}
-    {!active && pip && pipClip && <aside className="cinema-pip" aria-label="A new shared clue"><CinematicVideo key={`${pip.eventKey}:${pip.serial}`} eventKey={playbackEventKey(room, pip.eventKey)} clip={pipClip} language={language} sound={sound} paused={room.timer.isPaused || !connected || attentionBlocked} onFinish={endPip} onPlayback={onPlayback}/><button aria-label="Dismiss clue film" onClick={endPip}>×</button><span>New public evidence</span></aside>}
+    {!active && pip && pipClip && <aside className="cinema-pip" aria-label="A new shared clue"><CinematicVideo key={`${pip.eventKey}:${pip.serial}`} eventKey={playbackEventKey(room, pip.eventKey)} clip={pipClip} language={language} sound={sound} mediaLeader={mediaLeader} paused={room.timer.isPaused || !connected || attentionBlocked} onFinish={endPip} onPlayback={onPlayback}/><button aria-label="Dismiss clue film" onClick={endPip}>×</button><span>New public evidence</span></aside>}
     <AttentionOverlay room={room} variant="host" connected={connected}/>
   </>;
 }
 
-interface VideoProps { eventKey: string; clip: CinematicClip; language: CaptionLanguage; sound: boolean; paused: boolean; onFinish: (failed?: boolean) => void; room?: RoomView; onPlayback?: PlaybackReporter }
-function CinematicVideo({ eventKey, clip, language, sound, paused, onFinish, room, onPlayback }: VideoProps) {
+interface VideoProps { eventKey: string; clip: CinematicClip; language: CaptionLanguage; sound: boolean; mediaLeader?: boolean; paused: boolean; onFinish: (failed?: boolean) => void; room?: RoomView; onPlayback?: PlaybackReporter }
+export function CinematicVideo({ eventKey, clip, language, sound: preferredSound, mediaLeader = true, paused, onFinish, room, onPlayback }: VideoProps) {
+  const sound = stageAudioEnabled(preferredSound, mediaLeader);
   const video = useRef<HTMLVideoElement>(null);
   useNativePlayback(video, { eventKey, clipId: clip.id, kind: 'film' }, onPlayback, !paused);
   const [time, setTime] = useState(0), [started, setStarted] = useState(false), [needsGesture, setNeedsGesture] = useState(false), [audioBlocked, setAudioBlocked] = useState(false);

@@ -35,12 +35,12 @@ function engineParty(count = 4, rehearsal = false) {
   return { engine, master, players, command, view, results, report, get cap() { return cap; }, setNow(value: number) { now = value; } };
 }
 
-test('stage preferences have safe defaults for new/legacy rooms, validate atomically and survive a new case', () => {
+test('stage preferences enable music at 25% for new/legacy rooms, validate atomically and preserve an explicit mute', () => {
   const f = engineParty();
-  assert.deepEqual(f.view().stageSettings, { distanceMode: false, musicEnabled: false, musicVolume: 25 });
+  assert.deepEqual(f.view().stageSettings, { distanceMode: false, musicEnabled: true, musicVolume: 25 });
   const legacy = f.engine.exportRoom(f.master.code); delete legacy.stageSettings;
   f.engine.restoreRoom(legacy);
-  assert.deepEqual(f.view().stageSettings, { distanceMode: false, musicEnabled: false, musicVolume: 25 });
+  assert.deepEqual(f.view().stageSettings, { distanceMode: false, musicEnabled: true, musicVolume: 25 });
   f.command({ type: 'stage-settings', settings: { distanceMode: true, musicEnabled: true, musicVolume: 0 } });
   for (const settings of [{ musicVolume: -1 }, { musicVolume: 101 }, { musicVolume: 1.5 }, { musicVolume: NaN }, { musicVolume: '10' }, { musicEnabled: 'false' }, { distanceMode: 1 }, { musicVolume: 80, unknown: true }, null]) {
     const before = f.engine.exportRoom(f.master.code);
@@ -52,6 +52,8 @@ test('stage preferences have safe defaults for new/legacy rooms, validate atomic
   f.command({ type: 'stage-settings', settings: { musicVolume: 100 } });
   f.command({ type: 'pause' });
   f.command({ type: 'stage-settings', settings: { musicEnabled: false } });
+  f.engine.restoreRoom(JSON.parse(JSON.stringify(f.engine.exportRoom(f.master.code))));
+  assert.deepEqual(f.view().stageSettings, { distanceMode: true, musicEnabled: false, musicVolume: 100 });
   f.command({ type: 'reset' });
   assert.deepEqual(f.view().stageSettings, { distanceMode: true, musicEnabled: false, musicVolume: 100 });
 });
@@ -253,6 +255,19 @@ for (const backend of ['memory', 'sqlite'] as const) {
     };
     return { database, repository, service, execute, view, command, party };
   }
+
+  test(`${backend}: a newly created room enables music, while a saved GM mute survives service restart and reset`, async t => {
+    const f = serviceParty(); t.after(() => f.database?.close());
+    const master = await f.execute('room:create', { rehearsal: true }) as Session;
+    assert.deepEqual((await f.view(master)).stageSettings, { distanceMode: false, musicEnabled: true, musicVolume: 25 });
+    await f.command(master, { type: 'stage-settings', settings: { musicEnabled: false } });
+    const restarted = new OnlineGameService({ repository: f.repository, now: () => 100_000 });
+    assert.equal((await restarted.execute('room:subscribe', master) as RoomView).stageSettings!.musicEnabled, false);
+    const reset = await restarted.execute('room:command', { ...master, action: { type: 'reset' } }) as RoomView;
+    assert.deepEqual(reset.stageSettings, { distanceMode: false, musicEnabled: false, musicVolume: 25 });
+    const fresh = await restarted.execute('room:create', {}) as Session;
+    assert.equal((await restarted.execute('room:subscribe', fresh) as RoomView).stageSettings!.musicEnabled, true);
+  });
 
   test(`${backend}: concurrent awards open and immutable ballots survive CAS/restart and accepted receipt replay`, async t => {
     const f = serviceParty(); t.after(() => f.database?.close()); const { master, players } = await f.party();
