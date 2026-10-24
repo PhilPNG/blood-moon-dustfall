@@ -70,3 +70,16 @@ See `PARTY_SCENARIOS.md` for the timing/outage matrix, concurrent GM transitions
 4. Use two real connected phones to see optional table-talk partners. Check a new act, a disconnected partner and dismiss/complete. No other player receives the private dossier and no points change.
 5. Open `/watch/CODE` in a clean phone/browser and choose Spanish or Portuguese. Check public evidence/captions and that there are no voting, dossier, recovery or GM takeover controls. Reload a spectator view in a browser that also has a saved private seat: it must still be public. Reset and use the ordinary join button when seats reopen.
 6. After the final reveal, open Party awards. Submit one complete ballot per real phone, with no self nomination. Only turnout should update on the TV. Reveal early using the GM confirmation, test a tie, and skip/reopen a fresh ballot. Reset must remove the old ballot while keeping stage preferences.
+
+## Phone viewport regression
+
+Use CSS viewport sizes 320×568, 360×800, 375×667, 390×844 and 412×915, plus 844×390 landscape. Check actual `documentElement.clientWidth/clientHeight` before recording a result; the browser's viewport control can target a different tab from the one being inspected.
+
+- In Spanish, select **Cualquiera** on Join. The full label must remain on one line, and every gender choice must remain easy to tap.
+- Check character Profile/Secrets/Missions, all three investigation moves, evidence search/clear/pin, and sealed vote confirmation in English, Spanish and Portuguese. No page or control should extend horizontally beyond the viewport.
+- Enable phone captions, scroll into the case, change language and rotate. Captions must remain below the actual header. Run a real TV screen test or story film to check wrapped caption text; phones remain silent.
+- Tap each move shortcut with captions on and off. After smooth scrolling finishes, the focused heading or clue summary must sit below the entire caption bar. The offset should follow changing caption height, header height and rotation.
+- Check 44px caption, language and search-clear touch targets, and 16px editable search/recovery text. At a reduced 390×360 height, focus the recovery input and confirm it can be reached without horizontal scrolling.
+- On the GM phone, use the compact landscape action panel, scroll the settings dialog to its lower fields, save, and test invitation-copy and sound controls. Confirmation dialogs must keep their choices reachable.
+
+These checks emulate viewport geometry in the available desktop browser. Physical iOS/Android keyboards, safe-area hardware, browser-specific behavior and audible speaker output still need an actual-device party check.

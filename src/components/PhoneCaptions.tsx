@@ -5,6 +5,7 @@ import { parseNarrationManifest } from '../../shared/narration';
 import { playbackPosition } from '../../shared/media-sync';
 import type { RoomView } from '../../shared/types';
 import { useLanguage } from '../i18n';
+import { usePhoneHeaderOffset } from '../usePhoneHeaderOffset';
 import { useMediaManifest } from './media-manifest';
 
 const copy = {
@@ -21,6 +22,7 @@ function savedPreference(language: string) {
 /** A silent companion to actual TV playback. It never starts an audio or video element on the phone. */
 export function PhoneCaptions({ room, connected }: { room: RoomView; connected: boolean }) {
   const { language } = useLanguage(), labels = copy[language];
+  const captions = usePhoneHeaderOffset();
   const [enabled, setEnabled] = useState(() => savedPreference(language));
   const { manifest: films } = useMediaManifest('/media/cinematics.json', parseCinematicManifest, enabled && connected);
   const { manifest: voices } = useMediaManifest('/media/narration.json', parseNarrationManifest, enabled && connected);
@@ -44,7 +46,7 @@ export function PhoneCaptions({ room, connected }: { room: RoomView; connected: 
     try { localStorage.setItem(`dustfall.phoneCaptions.${language}`, next ? 'on' : 'off'); } catch { /* Optional storage. */ }
   };
   return <>
-    <section className={`phone-captions${caption ? ' has-caption' : ''}`} aria-label={labels.title} lang={language}>
+    <section ref={captions} className={`phone-captions${caption ? ' has-caption' : ''}`} aria-label={labels.title} lang={language}>
       <button type="button" className="phone-caption-toggle" onClick={toggle} aria-pressed={enabled}><Captions size={18}/><span>{enabled ? labels.on : labels.off}</span>{enabled && <Check size={15}/>}</button>
       {enabled && <div className="phone-caption-copy" aria-live="off">{caption ? <><small><Radio size={12}/>{room.playback?.kind === 'film' ? labels.film : labels.narration}</small><p>{caption}</p></> : <span>{!connected || room.timer.isPaused ? labels.paused : labels.waiting}</span>}</div>}
     </section>

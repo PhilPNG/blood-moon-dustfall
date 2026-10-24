@@ -245,6 +245,15 @@
 @media(max-width:370px){.gm-heading h1{font-size:46px}.gm-action-counts{padding:9px 7px;gap:5px}.gm-action-counts strong{font-size:25px}.gm-stage .gm-act-title{font-size:31px}}
 .gm-person-copy>.gm-entry-seal{color:#FFE178;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-top:5px}
 
+/* Keep the next action visible without covering the controller on a rotated phone. */
+@media(max-height:500px) and (orientation:landscape){
+  .gm-next{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center;gap:8px 12px;padding-block:10px}
+  .gm-next-copy{margin:0}
+  .gm-next-copy p{font-size:11px;line-height:1.35;margin-bottom:0}
+  .gm-next>.gm-primary{min-height:48px;font-size:20px}
+  .gm-next>.gm-override{grid-column:1/-1;min-height:44px;margin-top:0}
+}
+
 .gm-film-controls { margin-top:22px; padding-top:20px; border-top:1px solid #75518f; }
 .gm-film-controls > h3 { color:#ffe178; font-family:var(--arcade-display,'Barlow Condensed',Impact,sans-serif); font-size:25px; text-transform:uppercase; margin:0 0 8px; }
 .gm-film-controls > p { margin:0 0 16px; font-size:12px; line-height:1.6; }
@@ -254,7 +263,7 @@
 .gm-film-controls > span { display:block; margin-top:10px; color:#cdbadb; font-size:11px; line-height:1.5; }
 @media(max-width:360px) { .gm-film-buttons { grid-template-columns:1fr; } }
 
-.gm-language-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid #73579766}.gm-language-row>span{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#DDCBF6}.gm-language-row .language-menu{z-index:25}.gm-language-row .language-menu summary{min-height:36px;font-size:12px}.gm-page .gm-film-buttons{min-width:0}.gm-page .gm-field select{min-width:0;max-width:100%}.gm-page .gm-stage-top{gap:9px;flex-wrap:wrap}.gm-page .gm-stage-top>svg{flex:none}.gm-page .gm-stage .gm-label{max-width:100%;overflow-wrap:anywhere}.gm-page .gm-action-counts>span{min-width:0}.gm-page .gm-roster .gm-player-status{flex-wrap:wrap}
+.gm-language-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid #73579766}.gm-language-row>span{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#DDCBF6}.gm-language-row .language-menu{z-index:25}.gm-language-row .language-menu summary{min-height:44px;font-size:12px}.gm-page .gm-film-buttons{min-width:0}.gm-page .gm-field select{min-width:0;max-width:100%}.gm-page .gm-stage-top{gap:9px;flex-wrap:wrap}.gm-page .gm-stage-top>svg{flex:none}.gm-page .gm-stage .gm-label{max-width:100%;overflow-wrap:anywhere}.gm-page .gm-action-counts>span{min-width:0}.gm-page .gm-roster .gm-player-status{flex-wrap:wrap}
 .gm-media-status{padding:18px;background:linear-gradient(135deg,#30205C,#241647)}
 .gm-media-status[data-status="playing"]{border-color:#A5FFCE}
 .gm-media-status .gm-card-heading{margin-bottom:17px}
