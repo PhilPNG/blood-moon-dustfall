@@ -12,6 +12,8 @@ import { useAttentionCountdown } from '../useAttentionCountdown';
 import { attentionRequestPayload, withAttentionReceipt, type AttentionReceipt, type AttentionRequester } from './media-attention';
 import { displayLease } from './display-lease';
 import { useStageMusic } from './useStageMusic';
+import { createArcadeSound } from './arcade-sound';
+import { arcadeSoundCopy } from './arcade-sound-copy';
 import { DistanceInvestigation, StagePreflightStatus, StageSpotlight } from './StagePresentation';
 import { spotlightEvidence } from '../../shared/stage-presentation';
 import { publicEvidence } from '../../shared/evidence-browser';
@@ -94,13 +96,14 @@ function useDisplayPlayback(room: RoomView, connected: boolean, visible: boolean
 }
 
 function useArcadeSound(eventKey: string, blocked: boolean) {
-  const [enabled, setEnabled] = useState(false);
-  const audio = useRef<AudioContext | null>(null);
+  const [, refresh] = useState(0);
+  const [audio] = useState(() => createArcadeSound(() => new AudioContext(), () => refresh(value => value + 1)));
+  const { enabled, context, needsResume, pending } = audio.snapshot();
   const previous = useRef(eventKey);
   const interrupted = useRef(blocked); interrupted.current = blocked;
   const play = useCallback((frequencies: number[]) => {
-    const context = audio.current;
-    if (!context || context.state !== 'running' || interrupted.current) return;
+    const { context, enabled } = audio.snapshot();
+    if (!enabled || !context || context.state !== 'running' || interrupted.current) return;
     frequencies.forEach((frequency, index) => {
       const oscillator = context.createOscillator();
       const gain = context.createGain();
@@ -109,24 +112,20 @@ function useArcadeSound(eventKey: string, blocked: boolean) {
       gain.gain.setValueAtTime(0, start); gain.gain.linearRampToValueAtTime(.045, start + .01); gain.gain.exponentialRampToValueAtTime(.001, start + .22);
       oscillator.connect(gain); gain.connect(context.destination); oscillator.start(start); oscillator.stop(start + .24);
     });
-  }, []);
+  }, [audio]);
   useEffect(() => {
     if (blocked || previous.current === eventKey) return;
     const phaseChanged = previous.current.split('|')[0] !== eventKey.split('|')[0];
     previous.current = eventKey;
     if (enabled) play(phaseChanged ? [220, 330, 440, 660] : [660, 880]);
   }, [eventKey, enabled, play, blocked]);
-  useEffect(() => () => { void audio.current?.close(); }, []);
-  const toggle = async () => {
-    if (enabled) { setEnabled(false); return; }
-    try { audio.current ||= new AudioContext(); await audio.current.resume(); setEnabled(true); play([330, 440, 660]); }
-    catch { setEnabled(false); }
-  };
-  return { enabled, toggle, context: audio.current };
+  useEffect(() => () => audio.close(), [audio]);
+  const toggle = useCallback(async () => { if (await audio.toggle()) play([330, 440, 660]); }, [audio, play]);
+  return { enabled, toggle, context, needsResume, pending, mute: audio.mute };
 }
 
 export function Display({ room: incomingRoom, connected, joinOrigin, pairing, developerControls = false }: DisplayProps) {
-  const { language } = useLanguage(), labels = stageCopy[language];
+  const { language } = useLanguage(), labels = stageCopy[language], soundLabels = arcadeSoundCopy[language];
   const [full, setFull] = useState(false), [error, setError] = useState('');
   const [visible, setVisible] = useState(() => typeof document === 'undefined' || !document.hidden);
   const { reportPlayback, requestAttention: claimAttention, leader } = useDisplayPlayback(incomingRoom, connected, visible);
@@ -140,7 +139,7 @@ export function Display({ room: incomingRoom, connected, joinOrigin, pairing, de
   }, [claimAttention]);
   const attentionBlocked = useAttentionCountdown(room) > 0;
   const sceneKey = `${room.gameId ?? room.code}:${room.phase}:${room.round}`;
-  const { enabled: sound, toggle: toggleSound, context: soundContext } = useArcadeSound(`${sceneKey}|${room.attention?.id ?? ''}`, attentionBlocked || !connected || !visible || !leader);
+  const { enabled: sound, toggle: toggleSound, context: soundContext, needsResume: soundNeedsResume, pending: soundPending, mute: muteSound } = useArcadeSound(`${sceneKey}|${room.attention?.id ?? ''}`, attentionBlocked || !connected || !visible || !leader);
   const musicLevel = useStageMusic(soundContext, room, { sound, leader, connected, visible, mediaBusy: presentationBusy, attention: attentionBlocked, preflight: room.phase === 'lobby' && !!room.preflight && !room.preflight.completed && presentationBusy });
   const spotlight = spotlightEvidence(room, presentationBusy || attentionBlocked);
   useEffect(() => {
@@ -157,17 +156,19 @@ export function Display({ room: incomingRoom, connected, joinOrigin, pairing, de
     try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); setError(''); }
     catch { setError('Use your browser’s full screen option to expand this display.'); }
   };
-  const tools = <div className="stage-tools"><button onClick={toggleSound} aria-label={sound ? 'Mute game and film sound' : 'Enable game and film sound'} aria-pressed={sound} title={sound ? 'Sound on' : 'Sound off'}>{sound ? <Volume2/> : <VolumeX/>}</button><button aria-label={full ? 'Exit full screen' : 'Enter full screen'} onClick={fullscreen}>{full ? <Minimize2/> : <Maximize2/>}</button></div>;
-  if (room.masterReady === false) return <PairingDisplay room={room} connected={connected} joinOrigin={joinOrigin} pairing={pairing} tools={tools} error={error}/>;
+  const tools = <div className="stage-tools"><button onClick={toggleSound} disabled={soundPending} aria-label={soundNeedsResume ? soundLabels.resume : sound ? 'Mute game and film sound' : 'Enable game and film sound'} aria-pressed={soundNeedsResume ? undefined : sound} title={soundNeedsResume ? soundLabels.resume : sound ? 'Sound on' : 'Sound off'}>{sound && !soundNeedsResume ? <Volume2/> : <VolumeX/>}</button><button aria-label={full ? 'Exit full screen' : 'Enter full screen'} onClick={fullscreen}>{full ? <Minimize2/> : <Maximize2/>}</button></div>;
+  const soundRecovery = soundNeedsResume && <div className="stage-notice" role="status"><span>{soundLabels.holding}</span><div className="recovery-actions" style={{ justifyContent: 'center', marginTop: 8 }}><button className="recovery-button secondary" disabled={soundPending} onClick={toggleSound}>{soundPending ? soundLabels.resuming : soundLabels.resume}</button><button className="recovery-button secondary" onClick={muteSound}>{soundLabels.mute}</button></div></div>;
+  if (room.masterReady === false) return <PairingDisplay room={room} connected={connected} joinOrigin={joinOrigin} pairing={pairing} tools={tools} error={error} soundRecovery={soundRecovery}/>;
   return <div className={`dustfall-stage stage-${room.phase}${room.stageSettings?.distanceMode ? ' stage-distance' : ''}`} data-verdict={room.phase === 'results' ? room.result?.caught ? 'caught' : 'escaped' : undefined}>
     <StageArt/>
     <header className="stage-hud"><a className="stage-home" href="/" aria-label="Dustfall home"><DustfallLogo/></a><div className="stage-room-hud">{room.rehearsal && <b className="stage-rehearsal-badge">REHEARSAL</b>}<span>Room <strong>{room.code}</strong></span><i/><span>{room.phase === 'investigation' ? <>Act <strong>{String(room.round).padStart(2, '0')}</strong> of <strong>{String(room.settings.rounds).padStart(2, '0')}</strong></> : room.phase === 'lobby' ? 'A Halloween murder mystery' : room.phase === 'roles' ? 'The secret identities' : room.phase === 'voting' ? 'Final accusation' : 'The truth is out'}</span></div>{room.phase === 'investigation' ? <div className="stage-clock" aria-label="Time remaining"><Clock timer={room.timer} serverNow={room.serverNow}/></div> : <div className={`stage-live${!connected ? ' is-offline' : ''}`}><i/>{connected ? 'Live' : 'Offline'} <b>{room.players.length}<small> / {room.settings.maxPlayers}</small></b></div>}</header>
     {error && <p className="stage-notice" role="status">{error}</p>}
-    <CinematicPlayer room={room} connected={connected && visible} sound={sound} toggleSound={toggleSound} onPlayback={reportPlayback} onAttention={requestAttention} onBusyChange={setPresentationBusy} mediaLeader={leader} embeddedControls={developerControls}>{concealResults => <>
+    {soundRecovery}
+    <CinematicPlayer room={room} connected={connected && visible} sound={sound} soundNeedsResume={soundNeedsResume} soundPending={soundPending} toggleSound={toggleSound} muteSound={muteSound} onPlayback={reportPlayback} onAttention={requestAttention} onBusyChange={setPresentationBusy} mediaLeader={leader} embeddedControls={developerControls}>{concealResults => <>
       {spotlight ? <StageSpotlight room={room} blocked={presentationBusy || attentionBlocked}/> : room.phase === 'lobby' ? <><Lobby room={room} joinOrigin={joinOrigin}/><StagePreflightStatus room={room}/></> : room.phase === 'roles' ? <Roles room={room}/> : room.phase === 'investigation' ? room.stageSettings?.distanceMode ? <DistanceInvestigation room={room} blocked={presentationBusy || attentionBlocked || !connected || !visible}/> : <Investigation room={room}/> : room.phase === 'voting' ? <Voting room={room}/> : concealResults ? <main className="stage-verdict-wait" aria-label="The verdict"><span className="stage-kicker">The sealed accusations are in</span><h1>The truth is coming.</h1></main> : !presentationBusy && !attentionBlocked && (room.partyAwards?.status === 'voting' || room.partyAwards?.status === 'revealed') ? <main className="stage-party-awards-layout"><FunAwards room={{ ...room, isMaster: false, me: undefined }} connected={connected} variant="host"/><details className="stage-verdict-review"><summary>{labels.reviewVerdict}</summary><Results room={room} embedded/></details></main> : <Results room={room}/>}
       {room.phase === 'results' && !concealResults && <div className="stage-confetti" key={`${room.gameId ?? room.code}-results`} aria-hidden="true">{Array.from({ length: 26 }, (_, i) => <i key={i} style={{ '--piece': i } as CSSProperties}/>)}</div>}
     </>}</CinematicPlayer>
-    <footer className="stage-footer"><span>✦</span><Smartphone size={23}/><div className="stage-footer-copy"><p>{room.phase === 'lobby' ? developerControls ? 'Test controls above · your character stays on your phone' : 'Game master controls the show from their phone' : room.phase === 'investigation' ? 'Search. Share. Question everything.' : room.phase === 'voting' ? 'One shot. Make it count.' : room.phase === 'roles' ? 'Keep your secrets close. Get ready on your phone.' : 'Every suspect has a story. Now you know the truth.'}</p><GameMasterStatus room={room}/>{room.stageSettings?.musicEnabled && <p className="stage-music-status" data-music={musicLevel > 0 ? presentationBusy ? 'ducked' : 'playing' : 'holding'}>{!sound ? labels.musicUnlock : !leader ? labels.musicSecondary : presentationBusy && musicLevel > 0 ? labels.musicQuiet : labels.music}</p>}</div><span>✦</span>{tools}</footer>
+    <footer className="stage-footer"><span>✦</span><Smartphone size={23}/><div className="stage-footer-copy"><p>{room.phase === 'lobby' ? developerControls ? 'Test controls above · your character stays on your phone' : 'Game master controls the show from their phone' : room.phase === 'investigation' ? 'Search. Share. Question everything.' : room.phase === 'voting' ? 'One shot. Make it count.' : room.phase === 'roles' ? 'Keep your secrets close. Get ready on your phone.' : 'Every suspect has a story. Now you know the truth.'}</p><GameMasterStatus room={room}/>{room.stageSettings?.musicEnabled && <p className="stage-music-status" data-music={musicLevel > 0 ? presentationBusy ? 'ducked' : 'playing' : 'holding'}>{!sound ? labels.musicUnlock : !leader ? labels.musicSecondary : soundNeedsResume ? soundLabels.holding : presentationBusy && musicLevel > 0 ? labels.musicQuiet : labels.music}</p>}</div><span>✦</span>{tools}</footer>
     {(!connected || room.timer.isPaused) && <div className="stage-interruption" role="status"><div>{!connected ? <WifiOff size={40}/> : <Pause size={40}/>}<h2>{!connected ? 'Restoring the signal' : 'Hold your horses'}</h2><p>{!connected ? 'Reconnecting to Dustfall. Keep this screen open.' : room.phase === 'results' ? 'The game master paused the ending presentation. It will resume shortly.' : 'The game master paused the clock. The investigation will resume shortly.'}</p></div></div>}
   </div>;
 }
@@ -236,7 +237,7 @@ function Results({ room, embedded = false }: { room: RoomView; embedded?: boolea
     {!!scores.length && <section className="stage-full-scores"><div className="stage-section-line"><h2>Every legend. Every point.</h2><span>Full party awards</span></div><div className="stage-score-grid">{scores.map((score, index) => { const player = room.players.find(player => player.id === score.playerId); return <article key={score.playerId} data-score-row={score.playerId}><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{player?.name || 'Guest'}</h3><p>{score.searches} searches · {score.cluesShared} shared · {score.correctAnswers} correct{score.correctAccusation ? ' · correct accusation' : ''}</p></div><strong>{score.score}<small>pts</small></strong></article>; })}</div></section>}
   </Container>;
 }
-function PairingDisplay({ room, connected, joinOrigin, pairing, tools, error }: { room: RoomView; connected: boolean; joinOrigin: string; pairing?: PairingTicket; tools: ReactNode; error: string }) {
+function PairingDisplay({ room, connected, joinOrigin, pairing, tools, error, soundRecovery }: { room: RoomView; connected: boolean; joinOrigin: string; pairing?: PairingTicket; tools: ReactNode; error: string; soundRecovery: ReactNode }) {
   const [now, setNow] = useState(Date.now()), [copied, setCopied] = useState(false), [copyError, setCopyError] = useState('');
   useEffect(() => { const interval = window.setInterval(() => setNow(Date.now()), 1000); return () => window.clearInterval(interval); }, []);
   const valid = pairing?.code === room.code && pairing.expiresAt > now;
@@ -248,5 +249,5 @@ function PairingDisplay({ room, connected, joinOrigin, pairing, tools, error }: 
       setCopied(true); setCopyError('');
     } catch { setCopyError('Select the link below and copy it to your phone.'); }
   }
-  return <div className="dustfall-stage stage-pairing"><StageArt/><header className="stage-hud"><a href="/" className="stage-home" aria-label="Dustfall home"><DustfallLogo/></a><div className="stage-room-hud">The night begins on your phone</div><div className="stage-live"><i/>{connected ? 'Room ready' : 'Reconnecting'}</div></header>{(!connected || error) && <p className="stage-notice" role="status">{error || 'Reconnecting to your room. Keep this display open.'}</p>}<main className="stage-pairing-main"><section className="stage-pairing-copy"><span className="stage-kicker">Room {room.code} / The shared screen</span><h1>Run the show.<br/><em>From your phone.</em></h1><p>This computer is the shared screen. The game master runs the night from private phone controls.</p><ol><li><Smartphone/><span>Scan with the game master’s phone</span></li><li><LockKeyhole/><span>Keep the controls on that phone</span></li><li><Users/><span>Invite your suspects once paired</span></li></ol></section><section className="stage-ticket stage-pair-ticket" aria-labelledby="pairing-title">{pairUrl ? <><span className="stage-kicker">One phone. One game master.</span><h2 id="pairing-title">Game master QR</h2><p>Scan for private phone controls</p><div className="stage-pair-qr"><QRCodeSVG value={pairUrl} size={260} level="M" marginSize={2} title={`Game master pairing for Dustfall room ${room.code}`}/></div><p>One use · expires in {Math.max(1, Math.ceil((pairing!.expiresAt - now) / 60000))} min</p><button className="stage-copy-link" onClick={copy}>{copied ? <Check size={18}/> : <Copy size={18}/>} {copied ? 'Phone link copied' : 'Copy phone link'}</button><details className="stage-pair-link"><summary>Can’t scan? Copy the link to your phone</summary><span>{pairUrl}</span></details>{copyError && <p role="status">{copyError}</p>}</> : <><Smartphone size={56}/><h2 id="pairing-title">{pairing ? 'This pairing link has expired.' : 'Waiting for the game master'}</h2><p>{pairing ? 'Return home and create a new room to get a fresh phone pairing QR.' : 'Open the original pairing screen on the computer that created this room, then scan its game master QR with your phone.'}</p>{pairing && <a className="stage-copy-link" href="/">Back home</a>}</>}</section></main><footer className="stage-footer"><LockKeyhole size={20}/><p>Private controls on the game master’s phone</p>{tools}</footer></div>;
+  return <div className="dustfall-stage stage-pairing"><StageArt/><header className="stage-hud"><a href="/" className="stage-home" aria-label="Dustfall home"><DustfallLogo/></a><div className="stage-room-hud">The night begins on your phone</div><div className="stage-live"><i/>{connected ? 'Room ready' : 'Reconnecting'}</div></header>{(!connected || error) && <p className="stage-notice" role="status">{error || 'Reconnecting to your room. Keep this display open.'}</p>}{soundRecovery}<main className="stage-pairing-main"><section className="stage-pairing-copy"><span className="stage-kicker">Room {room.code} / The shared screen</span><h1>Run the show.<br/><em>From your phone.</em></h1><p>This computer is the shared screen. The game master runs the night from private phone controls.</p><ol><li><Smartphone/><span>Scan with the game master’s phone</span></li><li><LockKeyhole/><span>Keep the controls on that phone</span></li><li><Users/><span>Invite your suspects once paired</span></li></ol></section><section className="stage-ticket stage-pair-ticket" aria-labelledby="pairing-title">{pairUrl ? <><span className="stage-kicker">One phone. One game master.</span><h2 id="pairing-title">Game master QR</h2><p>Scan for private phone controls</p><div className="stage-pair-qr"><QRCodeSVG value={pairUrl} size={260} level="M" marginSize={2} title={`Game master pairing for Dustfall room ${room.code}`}/></div><p>One use · expires in {Math.max(1, Math.ceil((pairing!.expiresAt - now) / 60000))} min</p><button className="stage-copy-link" onClick={copy}>{copied ? <Check size={18}/> : <Copy size={18}/>} {copied ? 'Phone link copied' : 'Copy phone link'}</button><details className="stage-pair-link"><summary>Can’t scan? Copy the link to your phone</summary><span>{pairUrl}</span></details>{copyError && <p role="status">{copyError}</p>}</> : <><Smartphone size={56}/><h2 id="pairing-title">{pairing ? 'This pairing link has expired.' : 'Waiting for the game master'}</h2><p>{pairing ? 'Return home and create a new room to get a fresh phone pairing QR.' : 'Open the original pairing screen on the computer that created this room, then scan its game master QR with your phone.'}</p>{pairing && <a className="stage-copy-link" href="/">Back home</a>}</>}</section></main><footer className="stage-footer"><LockKeyhole size={20}/><p>Private controls on the game master’s phone</p>{tools}</footer></div>;
 }

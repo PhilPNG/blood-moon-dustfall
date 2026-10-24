@@ -83,3 +83,17 @@ Use CSS viewport sizes 320×568, 360×800, 375×667, 390×844 and 412×915, plus
 - On the GM phone, use the compact landscape action panel, scroll the settings dialog to its lower fields, save, and test invitation-copy and sound controls. Confirmation dialogs must keep their choices reachable.
 
 These checks emulate viewport geometry in the available desktop browser. Physical iOS/Android keyboards, safe-area hardware, browser-specific behavior and audible speaker output still need an actual-device party check.
+
+## Native browser interruptions
+
+The October 24 native pass used Safari in an iPhone 16e iOS 26.3 Simulator. It verified the Spanish-first join flow, the actual iOS software keyboard with the name visible above it, a two-player live room, saved character after refresh/background return, synchronized Spanish film captions, and tap-started inline film playback. This is simulator evidence, not physical-phone or speaker-output certification. The installed Android API 37 emulator booted, but its window could not be controlled by the available native UI bridge; Android Chrome keyboard, decoder and lifecycle behavior remain unverified.
+
+Repeat these on physical iPhone Safari and Android Chrome before a party:
+
+1. Join a disposable rehearsal, type a name with the software keyboard, dismiss it, choose a gender and enter. Check room-code and recovery-code editing too. Repeat in landscape with captions visible.
+2. Record the assigned character. Reload, switch apps for 30 seconds, lock/unlock, then return. The same seat, character and accepted actions must remain; another seat must not appear.
+3. Disable connectivity during a pending search or vote, then restore it. Buttons should recover and an accepted action should not duplicate. Recover on another device with the private code; the previous credentials must stop working.
+4. Enable Sound on the shared display. Interrupt it with another app, lock/unlock or an incoming call. If the browser suspends audio, use **Resume sound** once. It must retain the sound preference, music volume and active-TV ownership. **Keep muted** must remain available, including during a film.
+5. Hide a film for longer than six seconds, then return. Background suspension must not be treated as a stalled source. A foreground source that really stalls must still time out; a manual Play prompt and GM pause must remain authoritative. Check caption synchronization after returning.
+
+Deterministic lifecycle tests cover interrupted/suspended/closed audio contexts, rejected and overlapping resume attempts, cleanup after unmount, hidden/pagehide film watchdogs, overdue timers, and pause/gesture gates. They supplement native testing; they do not simulate mobile decoding, cellular handoff, calls, battery saving or audible output.

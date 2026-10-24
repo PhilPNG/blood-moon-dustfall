@@ -16,6 +16,7 @@ import { useLanguage } from '../i18n';
 import { preflightCaptionLanguage, preflightEvent } from '../../shared/stage-presentation';
 import { stageCopy } from './stage-translations';
 import { stageAudioEnabled } from './stage-audio';
+import { arcadeSoundCopy } from './arcade-sound-copy';
 
 const CAPTION_KEY = 'dustfall.captionLanguage';
 const isCaptionLanguage = (value: unknown): value is CaptionLanguage => value === 'off' || value === 'en' || value === 'es' || value === 'pt-BR';
@@ -39,6 +40,9 @@ function useReducedMotion() {
 interface PlaybackRequest { eventKey: string; clipId: CinematicId; serial: number }
 interface CinematicPlayerProps {
   room: RoomView; connected: boolean; sound: boolean; toggleSound: () => void | Promise<void>;
+  soundNeedsResume?: boolean;
+  soundPending?: boolean;
+  muteSound?: () => void;
   onPlayback?: PlaybackReporter;
   onAttention?: AttentionRequester;
   onBusyChange?: (busy: boolean) => void;
@@ -48,8 +52,9 @@ interface CinematicPlayerProps {
 }
 
 /** Movies are a layer of the public stage; game phases remain authoritative on the GM phone. */
-export function CinematicPlayer({ room, connected, sound, toggleSound, children, onPlayback, onAttention, onBusyChange, mediaLeader = true, embeddedControls = false }: CinematicPlayerProps) {
+export function CinematicPlayer({ room, connected, sound, toggleSound, soundNeedsResume = false, soundPending = false, muteSound, children, onPlayback, onAttention, onBusyChange, mediaLeader = true, embeddedControls = false }: CinematicPlayerProps) {
   const { t, language: interfaceLanguage } = useLanguage();
+  const soundLabels = arcadeSoundCopy[interfaceLanguage];
   const test = preflightEvent(room);
   const event = test ? mediaLeader && !room.preflight?.completed ? test : null : cinematicEvent(room), eventKey = event?.key ?? '';
   const attentionContext = attentionEventKey(room);
@@ -184,6 +189,15 @@ export function CinematicPlayer({ room, connected, sound, toggleSound, children,
     };
   }, [cinemaVisible, embeddedControls, attentionBlocked]);
   function skipFilm() { history.claim(viewedKey); setMain(null); setEntered(eventKey); }
+  function resumeFilmSound() {
+    // Recovery can remove its own button; retain keyboard focus inside the film dialog.
+    filmLayer.current?.querySelector<HTMLButtonElement>('.cinema-skip')?.focus({ preventScroll: true });
+    void toggleSound();
+  }
+  function muteFilmSound() {
+    filmLayer.current?.querySelector<HTMLButtonElement>('.cinema-skip')?.focus({ preventScroll: true });
+    muteSound?.();
+  }
   const endMain = useCallback((failed = false) => { if (test && !failed) history.claim(test.key); setMain(null); if (failed) setNotice('The film could not play. The story continues below.'); }, [test?.key, history]);
   const endPip = useCallback(() => { setPip(null); setEvidenceReady(eventKey); }, [eventKey]);
   const captions = <label className="cinema-caption-picker"><Captions aria-hidden="true"/><span className="cinema-sr-only">Closed captions</span><select aria-label="Closed captions" value={language} onChange={e => changeLanguage(e.target.value as CaptionLanguage)}><option value="off">CC Off</option><option value="en">English</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option></select></label>;
@@ -202,7 +216,7 @@ export function CinematicPlayer({ room, connected, sound, toggleSound, children,
       else if (!key.shiftKey && document.activeElement === last) { key.preventDefault(); first.focus(); }
     }}>
       {activeClip && active ? <CinematicVideo key={`${active.eventKey}:${active.serial}`} eventKey={playbackEventKey(room, active.eventKey)} clip={activeClip} language={preflightCaptionLanguage(room, language)} sound={sound} mediaLeader={mediaLeader} paused={room.timer.isPaused || !connected || attentionBlocked} onFinish={endMain} room={room} onPlayback={onPlayback}/> : <div className="cinema-loading" role="status"><Film/><span>{room.phase === 'results' ? 'The truth is coming…' : test ? stageCopy[interfaceLanguage].test : 'The next chapter begins…'}</span></div>}
-      <div className="cinema-topbar"><span className="cinema-film-label"><Film aria-hidden="true"/>{test ? stageCopy[interfaceLanguage].test : activeClip?.title || 'Blood Moon over Dustfall'}</span><div>{!sound && <button onClick={() => void toggleSound()}><Volume2 aria-hidden="true"/> Enable sound</button>}<button className="cinema-skip" onClick={skipFilm}><SkipForward aria-hidden="true"/> Skip film</button></div></div>
+      <div className="cinema-topbar"><span className="cinema-film-label"><Film aria-hidden="true"/>{test ? stageCopy[interfaceLanguage].test : activeClip?.title || 'Blood Moon over Dustfall'}</span><div style={sound && soundNeedsResume ? { flexWrap: 'wrap', justifyContent: 'flex-end' } : undefined}>{!sound && <button onClick={() => void toggleSound()}><Volume2 aria-hidden="true"/> Enable sound</button>}{sound && soundNeedsResume && <>{mediaLeader && <button disabled={soundPending} onClick={resumeFilmSound}>{soundPending ? soundLabels.resuming : soundLabels.resume}</button>}{muteSound && <button onClick={muteFilmSound}>{soundLabels.mute}</button>}</>}<button className="cinema-skip" onClick={skipFilm}><SkipForward aria-hidden="true"/> Skip film</button></div></div>
       {sound && !mediaLeader && <p className="cinema-audio-authority cinema-audio-authority--film" role="status">{stageCopy[interfaceLanguage].audioSecondary}</p>}
       {test && <div className="cinema-preflight-note">{stageCopy[interfaceLanguage].testConfirm}</div>}
       {room.timer.isPaused && <div className="cinema-paused" role="status"><Pause/> Film paused by the game master</div>}
