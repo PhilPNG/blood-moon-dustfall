@@ -3,7 +3,7 @@
 <h1 align="center">Blood Moon over Dustfall</h1>
 <p align="center"><strong>Cowboys. Aliens. Very bad alibis.</strong><br>A Halloween murder mystery for one shared screen, a game-master phone and 4–20 player phones.</p>
 
-<p align="center"><a href="https://blood-moon-dustfall.vercel.app/">Play now</a> · <a href="https://blood-moon-dustfall.vercel.app/cast">Meet the cast</a> · <a href="https://blood-moon-dustfall.vercel.app/party-kit">Print the party kit</a> · <a href="https://blood-moon-dustfall.vercel.app/films">Watch the films</a></p>
+<p align="center"><a href="https://party.devicebytes.com/">Play now</a> · <a href="https://party.devicebytes.com/cast">Meet the cast</a> · <a href="https://party.devicebytes.com/party-kit">Print the party kit</a> · <a href="https://party.devicebytes.com/films">Watch the films</a></p>
 
 Halloween, 1887. Six weeks after a starship crashed outside Dustfall, humans and Asterians gather at the Eclipse Saloon to sign a peace treaty. The lights go out. The mayor is dead. The living power core is missing. A containment field traps everyone in town—and one of your friends knows exactly what happened.
 
@@ -20,7 +20,7 @@ An illustrated party arcade inspired by the shared-screen rhythm of Jackbox and 
 
 ## Bring your friends to Dustfall
 
-1. **Create the room on the GM’s phone.** Open [Host on this phone](https://blood-moon-dustfall.vercel.app/host), choose a recognizable GM name, and keep this controller private. Desktop setup can instead issue a one-use QR to pair that phone.
+1. **Create the room on the GM’s phone.** Open [Host on this phone](https://party.devicebytes.com/host), choose a recognizable GM name, and keep this controller private. Desktop setup can instead issue a one-use QR to pair that phone.
 2. **Put the public stage on the TV.** Open the site on a computer and enter the four-letter room code under **Open a public display**. Enable sound with a click and use fullscreen.
 3. **Invite the players.** They scan the player QR or enter the room code. The first phone screen asks for a language, followed by their name and a character gender preference: man, woman or either. Explicit preferences are respected; a full gender pool asks for another choice. The GM may reserve named characters before starting.
 4. **Keep a private way back in.** Each player and the GM can reveal their own twelve-character recovery code. Save it discreetly; the public room code alone cannot recover an identity. The GM may nominate a real guest as backup.
@@ -66,7 +66,7 @@ After the verdict, the GM can open optional **Party awards**: Best Poker Face, B
 
 ## Meet all twenty suspects
 
-Public identities are safe to browse. Private dossiers go only to the assigned player in the running game. The [cast gallery](https://blood-moon-dustfall.vercel.app/cast) has full public biographies, personalities and costume cues.
+Public identities are safe to browse. Private dossiers go only to the assigned player in the running game. The [cast gallery](https://party.devicebytes.com/cast) has full public biographies, personalities and costume cues.
 
 <table>
 <tr>
@@ -124,7 +124,7 @@ These captures show the working site, separate from the design concepts below. S
 
 **Eleven Higgsfield films** cover the opening, five act intros, a public clue event, voting and three endings. **Thirteen ElevenLabs announcements**, voiced by **Arthur — Engaging Southern Cowboy**, explain joining, roles, acts, evidence, voting and outcomes, and warn at thirty seconds. Existing recordings are generated ahead of play; guests need neither service.
 
-[Watch the 18-second opening film](https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/fda1f894-56ad-487d-81f7-0b71a1f7b02e.mp4), or open the [film library](https://blood-moon-dustfall.vercel.app/films) for caption controls and transcripts. Its endings contain spoilers.
+[Watch the 18-second opening film](https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/fda1f894-56ad-487d-81f7-0b71a1f7b02e.mp4), or open the [film library](https://party.devicebytes.com/films) for caption controls and transcripts. Its endings contain spoilers.
 
 Speech is English; timed captions support **English, Spanish and Brazilian Portuguese**. Spanish/Portuguese phones enable silent live captions by default, following the TV’s actual film/narration clock independently of its caption language. Buffering, pause, replay, skip and stale connections retire or update that clock. Narration waits for film audio; a scoped media-only display lease coordinates one TV without giving it GM authority.
 
@@ -161,7 +161,7 @@ Presence expires after fifteen seconds without a device refresh. Rooms expire af
 
 ## Test the whole game
 
-Open [the developer rehearsal](https://blood-moon-dustfall.vercel.app/dev) for an isolated **1–20-player** room with authenticated **Next step** controls on its public stage. One real player can run the complete loop. Add sample guests in the lobby to test accusations; a solo player has no self-vote target and can advance to an empty-ballot ending. Rehearsal mode grants no controls over ordinary party rooms.
+Open [the developer rehearsal](https://party.devicebytes.com/dev) for an isolated **1–20-player** room with authenticated **Next step** controls on its public stage. One real player can run the complete loop. Add sample guests in the lobby to test accusations; a solo player has no self-vote target and can advance to an empty-ballot ending. Rehearsal mode grants no controls over ordinary party rooms.
 
 For a realistic rehearsal, use a TV, the GM phone and four real or sample guests. Choose mixed languages, read roles, perform every act action, pause/resume, add time, leave/rejoin, seal votes, reveal and reset. Check that public counts update while vote choices remain private. **Take a test ride** adds clearly named samples that ready, search, answer, share, suspect and vote automatically.
 
@@ -216,6 +216,6 @@ node scripts/verify-party-features.mjs http://localhost:3001
 
 Hosted rooms use the existing Sites Worker and D1. Visible devices poll about once a second; concurrent mutations retry against current revisions. Commands include the viewed game step and stable receipts, preventing retries or stale controllers from advancing a later step. Private credentials travel in HTTPS JSON bodies; short-lived pairing tickets use fragments cleared on arrival.
 
-The **Vercel production site is live at [blood-moon-dustfall.vercel.app](https://blood-moon-dustfall.vercel.app)**. [`vercel.json`](vercel.json) publishes `.web-dist/` and forwards room operations to the existing Sites API; `api/config.mjs` returns the current frontend origin, preserving the same rooms and current public site. There is no second database. Use one origin throughout a game: browser-saved identities are origin-scoped, so domain changes require private recovery. See [VERCEL.md](docs/VERCEL.md).
+The **Vercel production site is live at [party.devicebytes.com](https://party.devicebytes.com)**. [`vercel.json`](vercel.json) publishes `.web-dist/` and forwards room operations to the existing Sites API; `api/config.mjs` returns the current frontend origin, so room invitations and both player and private GM pairing QRs stay on the domain you opened. There is no second database. The original [Vercel address](https://blood-moon-dustfall.vercel.app) and Sites address remain available without forcing existing games onto a new origin. Use `party.devicebytes.com` on the TV and every phone for a new game. Browser-saved identities are origin-scoped; use a private recovery code when moving an existing identity between domains. See [VERCEL.md](docs/VERCEL.md).
 
 Public source: [PhilPNG/blood-moon-dustfall](https://github.com/PhilPNG/blood-moon-dustfall). `node scripts/stage-public.mjs` creates the ignored `.public-release/` export while preserving its Git history. Its allowlist includes playable source, art/media, reviewed screenshots and docs. It excludes private hosting metadata, consent records, operational/billing logs, runtime databases, bundles and dependencies. `scripts/stage-release.mjs` remains the separate private Sites source workflow. Staging does not publish or deploy.

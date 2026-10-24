@@ -1,8 +1,16 @@
 # Testing Dustfall with friends
 
-Public site: https://blood-moon-dustfall.vercel.app
+Public site: https://party.devicebytes.com
 
-The original Sites host remains available and supplies the same durable room backend.
+The original Vercel and Sites hosts remain available and use the same durable room backend. Use `party.devicebytes.com` on the TV and every phone for a new party. Saved identities are scoped to the domain where they joined; use the original domain or a private recovery code to bring an existing identity to the new domain.
+
+## Custom-domain joining check
+
+1. Open `https://party.devicebytes.com` in a fresh desktop browser. Confirm `/api/config` returns that exact HTTPS origin and `/api/health` is healthy.
+2. Create a disposable room. Scan the private GM pairing QR with a phone; its address must begin `https://party.devicebytes.com/host/CODE#ticket=`. After pairing, the fragment clears, the controls stay on the phone, and the public TV stops showing that ticket.
+3. Scan the TV's player QR with a different phone. It must open `https://party.devicebytes.com/join/CODE`, ask for a language, and join the same room. Check the GM's copied player/spectator invitations and public-screen link also use this domain.
+4. Reload the GM and guest phones. Their controller and player seat must return without duplication. In a clean browser, open the public stage and spectator view; neither may expose secrets or GM controls.
+5. Open `/host`, `/join/CODE`, `/screen/CODE`, `/play/CODE`, `/recover/CODE`, `/watch/CODE`, `/dev`, `/films`, `/cast` and `/party-kit` directly. Each must load the app without a deployment sign-in page. Include one phone on cellular data for the party rehearsal.
 
 ## Quick developer run
 

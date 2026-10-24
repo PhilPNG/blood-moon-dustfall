@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { QRCodeSVG } from 'qrcode.react';
 import { Master, getMasterAction, preferenceActions } from '../src/components/Master';
 import type { RoomView } from '../shared/types';
 
@@ -45,6 +46,17 @@ test('starting requires four players and the lobby exposes invitation and displa
   assert.match(html, /https:\/\/alibi\.example\/join\/CASE/);
   assert.match(html, /https:\/\/alibi\.example\/screen\/CASE/);
   assert.match(html, /Manage Alex/);
+});
+
+test('the GM invites players and spectators to the custom domain and opens its public display', () => {
+  const html = renderToStaticMarkup(createElement(Master, { ...props, room: room(), joinOrigin: 'https://party.devicebytes.com/' }));
+  for (const path of ['join', 'watch', 'screen']) assert.ok(html.includes(`href="https://party.devicebytes.com/${path}/CASE"`));
+  const expectedQR = renderToStaticMarkup(createElement(QRCodeSVG, {
+    value: 'https://party.devicebytes.com/join/CASE',
+    size: 136, level: 'M', bgColor: '#FFF0CB', fgColor: '#130C25', title: 'Join ALIBI room CASE',
+  }));
+  assert.ok(html.includes(expectedQR), 'The GM invitation QR must encode the custom-domain player invitation.');
+  assert.doesNotMatch(html, /#ticket=|blood-moon-dustfall\.vercel\.app/);
 });
 
 test('missing acknowledgements and votes require the explicit continue override', () => {
