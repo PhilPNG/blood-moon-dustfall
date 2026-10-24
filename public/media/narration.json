@@ -1,0 +1,1443 @@
+{
+  "version": 1,
+  "voice": "Arthur - Engaging Southern Cowboy",
+  "provider": "ElevenLabs",
+  "clips": [
+    {
+      "id": "lobby",
+      "title": "Welcome to Dustfall",
+      "src": "/media/narrator/lobby.mp3",
+      "duration": 16.536,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.04,
+            "text": "Howdy, partners."
+          },
+          {
+            "start": 1.345,
+            "end": 2.72,
+            "text": "Welcome to Dustfall,"
+          },
+          {
+            "start": 2.945,
+            "end": 6.0,
+            "text": "where the hats are tall and the alibis are taller."
+          },
+          {
+            "start": 6.545,
+            "end": 10.0,
+            "text": "Grab your phone, scan the code, and join the saloon."
+          },
+          {
+            "start": 10.585,
+            "end": 12.16,
+            "text": "One phone runs the show."
+          },
+          {
+            "start": 12.785,
+            "end": 14.4,
+            "text": "Everybody else gets a secret."
+          },
+          {
+            "start": 14.905,
+            "end": 16.4,
+            "text": "Keep those screens close."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.04,
+            "text": "Olá, parceiros."
+          },
+          {
+            "start": 1.345,
+            "end": 2.72,
+            "text": "Bem-vindos a Dustfall,"
+          },
+          {
+            "start": 2.945,
+            "end": 6.0,
+            "text": "onde os chapéus são grandes e os álibis, maiores ainda."
+          },
+          {
+            "start": 6.545,
+            "end": 10.0,
+            "text": "Peguem o celular, leiam o código e entrem no saloon."
+          },
+          {
+            "start": 10.585,
+            "end": 12.16,
+            "text": "Um celular controla o jogo."
+          },
+          {
+            "start": 12.785,
+            "end": 14.4,
+            "text": "Os demais recebem um segredo."
+          },
+          {
+            "start": 14.905,
+            "end": 16.4,
+            "text": "Não mostrem suas telas."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.04,
+            "text": "Hola, compañeros."
+          },
+          {
+            "start": 1.345,
+            "end": 2.72,
+            "text": "Bienvenidos a Dustfall,"
+          },
+          {
+            "start": 2.945,
+            "end": 6.0,
+            "text": "donde los sombreros son grandes y las coartadas, aún más."
+          },
+          {
+            "start": 6.545,
+            "end": 10.0,
+            "text": "Tomen el teléfono, escaneen el código y entren al salón."
+          },
+          {
+            "start": 10.585,
+            "end": 12.16,
+            "text": "Un teléfono dirige la función."
+          },
+          {
+            "start": 12.785,
+            "end": 14.4,
+            "text": "Los demás reciben un secreto."
+          },
+          {
+            "start": 14.905,
+            "end": 16.4,
+            "text": "No pierdan de vista sus pantallas."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/lobby.es.vtt"
+      }
+    },
+    {
+      "id": "roles",
+      "title": "Your secret identity",
+      "src": "/media/narrator/roles.mp3",
+      "duration": 19.879,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "All right, suspects."
+          },
+          {
+            "start": 1.585,
+            "end": 3.68,
+            "text": "Your character is waiting on your phone."
+          },
+          {
+            "start": 4.065,
+            "end": 6.96,
+            "text": "Read your profile, open your private secrets,"
+          },
+          {
+            "start": 7.025,
+            "end": 8.32,
+            "text": "and check your missions."
+          },
+          {
+            "start": 8.705,
+            "end": 10.56,
+            "text": "Your admission seal is public,"
+          },
+          {
+            "start": 10.785,
+            "end": 14.08,
+            "text": "so introduce its color and symbol along with your name."
+          },
+          {
+            "start": 14.385,
+            "end": 16.0,
+            "text": "You can bluff about yourself."
+          },
+          {
+            "start": 16.225,
+            "end": 18.0,
+            "text": "The evidence stays honest."
+          },
+          {
+            "start": 18.305,
+            "end": 19.76,
+            "text": "Tap ready when you're set."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "Muito bem, suspeitos."
+          },
+          {
+            "start": 1.585,
+            "end": 3.68,
+            "text": "Seu personagem está esperando no celular."
+          },
+          {
+            "start": 4.065,
+            "end": 6.96,
+            "text": "Leia seu perfil e abra seus segredos particulares."
+          },
+          {
+            "start": 7.025,
+            "end": 8.32,
+            "text": "Confira também suas missões."
+          },
+          {
+            "start": 8.705,
+            "end": 10.56,
+            "text": "Seu selo de entrada é público."
+          },
+          {
+            "start": 10.785,
+            "end": 14.08,
+            "text": "Ao se apresentar, diga seu nome e a cor e o símbolo do selo."
+          },
+          {
+            "start": 14.385,
+            "end": 16.0,
+            "text": "Você pode blefar sobre si mesmo."
+          },
+          {
+            "start": 16.225,
+            "end": 18.0,
+            "text": "As provas dizem a verdade."
+          },
+          {
+            "start": 18.305,
+            "end": 19.76,
+            "text": "Quando estiver pronto, confirme no celular."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "Muy bien, sospechosos."
+          },
+          {
+            "start": 1.585,
+            "end": 3.68,
+            "text": "Su personaje los espera en el teléfono."
+          },
+          {
+            "start": 4.065,
+            "end": 6.96,
+            "text": "Lean su perfil, abran sus secretos privados"
+          },
+          {
+            "start": 7.025,
+            "end": 8.32,
+            "text": "y revisen sus misiones."
+          },
+          {
+            "start": 8.705,
+            "end": 10.56,
+            "text": "Su sello de entrada es público,"
+          },
+          {
+            "start": 10.785,
+            "end": 14.08,
+            "text": "así que presenten su color y símbolo junto con su nombre."
+          },
+          {
+            "start": 14.385,
+            "end": 16.0,
+            "text": "Pueden mentir sobre ustedes mismos."
+          },
+          {
+            "start": 16.225,
+            "end": 18.0,
+            "text": "Las pruebas siempre dicen la verdad."
+          },
+          {
+            "start": 18.305,
+            "end": 19.76,
+            "text": "Toquen «Estoy listo» cuando terminen."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/roles.es.vtt"
+      }
+    },
+    {
+      "id": "act-1",
+      "title": "First investigation",
+      "src": "/media/narrator/act-1.mp3",
+      "duration": 17.789,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "First things first."
+          },
+          {
+            "start": 1.745,
+            "end": 3.2,
+            "text": "Read the case evidence,"
+          },
+          {
+            "start": 3.425,
+            "end": 5.84,
+            "text": "then search one location on your phone."
+          },
+          {
+            "start": 6.305,
+            "end": 9.2,
+            "text": "Share your assigned clue when the time feels right,"
+          },
+          {
+            "start": 9.505,
+            "end": 12.88,
+            "text": "answer the case question, and mark your current suspect."
+          },
+          {
+            "start": 13.825,
+            "end": 14.48,
+            "text": "Talk it out."
+          },
+          {
+            "start": 14.865,
+            "end": 17.789,
+            "text": "A loud accusation ain't the same as a good one."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "Vamos por partes."
+          },
+          {
+            "start": 1.745,
+            "end": 3.2,
+            "text": "Leia as provas do caso."
+          },
+          {
+            "start": 3.425,
+            "end": 5.84,
+            "text": "Depois, investigue um local pelo celular."
+          },
+          {
+            "start": 6.305,
+            "end": 9.2,
+            "text": "Compartilhe a pista que recebeu quando achar a hora certa."
+          },
+          {
+            "start": 9.505,
+            "end": 12.88,
+            "text": "Responda à pergunta do caso e marque seu principal suspeito."
+          },
+          {
+            "start": 13.825,
+            "end": 14.48,
+            "text": "Conversem sobre o caso."
+          },
+          {
+            "start": 14.865,
+            "end": 17.789,
+            "text": "Acusar mais alto não é acusar melhor."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.28,
+            "text": "Primero lo primero."
+          },
+          {
+            "start": 1.745,
+            "end": 3.2,
+            "text": "Lean las pruebas del caso"
+          },
+          {
+            "start": 3.425,
+            "end": 5.84,
+            "text": "y luego registren un lugar desde el teléfono."
+          },
+          {
+            "start": 6.305,
+            "end": 9.2,
+            "text": "Compartan la pista que recibieron cuando crean oportuno,"
+          },
+          {
+            "start": 9.505,
+            "end": 12.88,
+            "text": "respondan la pregunta del caso y señalen a su sospechoso actual."
+          },
+          {
+            "start": 13.825,
+            "end": 14.48,
+            "text": "Conversen sobre ello."
+          },
+          {
+            "start": 14.865,
+            "end": 17.789,
+            "text": "Acusar más fuerte no significa acusar mejor."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/act-1.es.vtt"
+      }
+    },
+    {
+      "id": "act-2",
+      "title": "Follow the bargain",
+      "src": "/media/narrator/act-2.mp3",
+      "duration": 16.3,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 2.16,
+            "text": "The plot just grew a second head."
+          },
+          {
+            "start": 2.545,
+            "end": 5.92,
+            "text": "New searches and a new question are open on your phone."
+          },
+          {
+            "start": 6.305,
+            "end": 8.08,
+            "text": "Follow the Black Star bargain,"
+          },
+          {
+            "start": 8.425,
+            "end": 11.2,
+            "text": "compare the evidence, and update your suspicion."
+          },
+          {
+            "start": 11.745,
+            "end": 14.48,
+            "text": "Those colorful meters show the room's theories."
+          },
+          {
+            "start": 14.785,
+            "end": 16.16,
+            "text": "They don't prove a thing."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 2.16,
+            "text": "O mistério acaba de ficar mais complicado."
+          },
+          {
+            "start": 2.545,
+            "end": 5.92,
+            "text": "Há novas buscas e uma nova pergunta no celular."
+          },
+          {
+            "start": 6.305,
+            "end": 8.08,
+            "text": "Siga a negociação de Black Star."
+          },
+          {
+            "start": 8.425,
+            "end": 11.2,
+            "text": "Compare as provas e atualize suas suspeitas."
+          },
+          {
+            "start": 11.745,
+            "end": 14.48,
+            "text": "Os indicadores coloridos mostram as teorias do grupo."
+          },
+          {
+            "start": 14.785,
+            "end": 16.16,
+            "text": "Eles não provam nada."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 2.16,
+            "text": "La trama acaba de complicarse."
+          },
+          {
+            "start": 2.545,
+            "end": 5.92,
+            "text": "Hay nuevas búsquedas y una nueva pregunta en el teléfono."
+          },
+          {
+            "start": 6.305,
+            "end": 8.08,
+            "text": "Sigan la negociación de Black Star,"
+          },
+          {
+            "start": 8.425,
+            "end": 11.2,
+            "text": "comparen las pruebas y actualicen sus sospechas."
+          },
+          {
+            "start": 11.745,
+            "end": 14.48,
+            "text": "Esos indicadores de colores muestran las teorías del grupo."
+          },
+          {
+            "start": 14.785,
+            "end": 16.16,
+            "text": "No demuestran nada."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/act-2.es.vtt"
+      }
+    },
+    {
+      "id": "act-3",
+      "title": "Match the seal",
+      "src": "/media/narrator/act-3.mp3",
+      "duration": 14.367,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Now comes the careful part."
+          },
+          {
+            "start": 2.225,
+            "end": 4.06,
+            "text": "Match the color from one record"
+          },
+          {
+            "start": 4.065,
+            "end": 5.6,
+            "text": "with the symbol from the other."
+          },
+          {
+            "start": 5.985,
+            "end": 8.8,
+            "text": "Every character has a different admission seal."
+          },
+          {
+            "start": 9.105,
+            "end": 11.92,
+            "text": "Put the records together, test the alibis,"
+          },
+          {
+            "start": 12.065,
+            "end": 14.24,
+            "text": "and let the facts do the finger-pointing."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Agora é preciso ter atenção."
+          },
+          {
+            "start": 2.225,
+            "end": 4.06,
+            "text": "Combine a cor de um registro"
+          },
+          {
+            "start": 4.065,
+            "end": 5.6,
+            "text": "com o símbolo do outro."
+          },
+          {
+            "start": 5.985,
+            "end": 8.8,
+            "text": "Cada personagem tem um selo de entrada diferente."
+          },
+          {
+            "start": 9.105,
+            "end": 11.92,
+            "text": "Cruze os registros e confira os álibis."
+          },
+          {
+            "start": 12.065,
+            "end": 14.24,
+            "text": "Deixe que os fatos apontem o culpado."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Ahora viene la parte delicada."
+          },
+          {
+            "start": 2.225,
+            "end": 4.06,
+            "text": "Combinen el color de un registro"
+          },
+          {
+            "start": 4.065,
+            "end": 5.6,
+            "text": "con el símbolo del otro."
+          },
+          {
+            "start": 5.985,
+            "end": 8.8,
+            "text": "Cada personaje tiene un sello de entrada distinto."
+          },
+          {
+            "start": 9.105,
+            "end": 11.92,
+            "text": "Relacionen los registros, comprueben las coartadas"
+          },
+          {
+            "start": 12.065,
+            "end": 14.24,
+            "text": "y dejen que los hechos señalen al culpable."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/act-3.es.vtt"
+      }
+    },
+    {
+      "id": "act-4",
+      "title": "Reconstruct the crime",
+      "src": "/media/narrator/act-4.mp3",
+      "duration": 14.289,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 2.0,
+            "text": "We've got a little more time on the trail."
+          },
+          {
+            "start": 2.465,
+            "end": 5.6,
+            "text": "Rebuild the missing minutes from blackout to theft."
+          },
+          {
+            "start": 5.985,
+            "end": 8.32,
+            "text": "Search again, answer the new question,"
+          },
+          {
+            "start": 8.505,
+            "end": 10.56,
+            "text": "and challenge the strongest theory."
+          },
+          {
+            "start": 10.905,
+            "end": 14.16,
+            "text": "If a piece doesn't fit, don't hammer it into place."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 2.0,
+            "text": "Ainda temos um pouco de tempo para investigar."
+          },
+          {
+            "start": 2.465,
+            "end": 5.6,
+            "text": "Reconstitua os minutos entre o apagão e o roubo."
+          },
+          {
+            "start": 5.985,
+            "end": 8.32,
+            "text": "Faça outra busca e responda à nova pergunta."
+          },
+          {
+            "start": 8.505,
+            "end": 10.56,
+            "text": "Questione a teoria mais forte."
+          },
+          {
+            "start": 10.905,
+            "end": 14.16,
+            "text": "Se uma peça não se encaixa, não force."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 2.0,
+            "text": "Nos queda un poco más de tiempo para investigar."
+          },
+          {
+            "start": 2.465,
+            "end": 5.6,
+            "text": "Reconstruyan los minutos que faltan entre el apagón y el robo."
+          },
+          {
+            "start": 5.985,
+            "end": 8.32,
+            "text": "Busquen de nuevo, respondan la nueva pregunta"
+          },
+          {
+            "start": 8.505,
+            "end": 10.56,
+            "text": "y pongan a prueba la teoría más sólida."
+          },
+          {
+            "start": 10.905,
+            "end": 14.16,
+            "text": "Si una pieza no encaja, no la fuercen."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/act-4.es.vtt"
+      }
+    },
+    {
+      "id": "act-5",
+      "title": "Make your final case",
+      "src": "/media/narrator/act-5.mp3",
+      "duration": 15.647,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.92,
+            "text": "Last call for loose ends."
+          },
+          {
+            "start": 2.305,
+            "end": 4.56,
+            "text": "Give your final theory a fair hearing:"
+          },
+          {
+            "start": 4.905,
+            "end": 7.52,
+            "text": "the person, the method, the motive,"
+          },
+          {
+            "start": 7.865,
+            "end": 9.68,
+            "text": "and the records that connect them."
+          },
+          {
+            "start": 10.145,
+            "end": 12.32,
+            "text": "Then hear the best objection."
+          },
+          {
+            "start": 12.705,
+            "end": 15.52,
+            "text": "Your next accusation will be the one that counts."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.92,
+            "text": "Última chance de resolver as pontas soltas."
+          },
+          {
+            "start": 2.305,
+            "end": 4.56,
+            "text": "Apresente sua teoria final com cuidado:"
+          },
+          {
+            "start": 4.905,
+            "end": 7.52,
+            "text": "a pessoa, o método, o motivo"
+          },
+          {
+            "start": 7.865,
+            "end": 9.68,
+            "text": "e os registros que ligam tudo isso."
+          },
+          {
+            "start": 10.145,
+            "end": 12.32,
+            "text": "Depois, escute o melhor argumento contrário."
+          },
+          {
+            "start": 12.705,
+            "end": 15.52,
+            "text": "Sua próxima acusação será a que vale."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.92,
+            "text": "Última oportunidad para atar cabos sueltos."
+          },
+          {
+            "start": 2.305,
+            "end": 4.56,
+            "text": "Examinen su teoría final con atención:"
+          },
+          {
+            "start": 4.905,
+            "end": 7.52,
+            "text": "la persona, el método, el motivo"
+          },
+          {
+            "start": 7.865,
+            "end": 9.68,
+            "text": "y los registros que los relacionan."
+          },
+          {
+            "start": 10.145,
+            "end": 12.32,
+            "text": "Después escuchen la mejor objeción."
+          },
+          {
+            "start": 12.705,
+            "end": 15.52,
+            "text": "Su próxima acusación será la que cuente."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/act-5.es.vtt"
+      }
+    },
+    {
+      "id": "voting",
+      "title": "Seal your accusation",
+      "src": "/media/narrator/voting.mp3",
+      "duration": 16.039,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.84,
+            "text": "Time to draw your conclusions."
+          },
+          {
+            "start": 2.225,
+            "end": 4.48,
+            "text": "Choose one other suspect on your phone,"
+          },
+          {
+            "start": 4.785,
+            "end": 6.72,
+            "text": "check the portrait and public seal,"
+          },
+          {
+            "start": 7.025,
+            "end": 9.2,
+            "text": "then confirm your accusation."
+          },
+          {
+            "start": 9.665,
+            "end": 12.16,
+            "text": "Once it's sealed, it stays sealed."
+          },
+          {
+            "start": 12.545,
+            "end": 14.22,
+            "text": "The big screen will show the truth"
+          },
+          {
+            "start": 14.225,
+            "end": 15.92,
+            "text": "when your game master calls it."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.84,
+            "text": "É hora de chegar a uma conclusão."
+          },
+          {
+            "start": 2.225,
+            "end": 4.48,
+            "text": "Escolha outro suspeito no celular."
+          },
+          {
+            "start": 4.785,
+            "end": 6.72,
+            "text": "Confira o retrato e o selo público."
+          },
+          {
+            "start": 7.025,
+            "end": 9.2,
+            "text": "Depois, confirme sua acusação."
+          },
+          {
+            "start": 9.665,
+            "end": 12.16,
+            "text": "Depois de confirmada, ela não pode ser alterada."
+          },
+          {
+            "start": 12.545,
+            "end": 14.22,
+            "text": "A tela grande vai revelar a verdade"
+          },
+          {
+            "start": 14.225,
+            "end": 15.92,
+            "text": "quando o mestre do jogo decidir."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.84,
+            "text": "Es hora de sacar conclusiones."
+          },
+          {
+            "start": 2.225,
+            "end": 4.48,
+            "text": "Elijan a otro sospechoso en el teléfono,"
+          },
+          {
+            "start": 4.785,
+            "end": 6.72,
+            "text": "comprueben el retrato y el sello público"
+          },
+          {
+            "start": 7.025,
+            "end": 9.2,
+            "text": "y después confirmen su acusación."
+          },
+          {
+            "start": 9.665,
+            "end": 12.16,
+            "text": "Una vez sellada, no se puede cambiar."
+          },
+          {
+            "start": 12.545,
+            "end": 14.22,
+            "text": "La pantalla grande mostrará la verdad"
+          },
+          {
+            "start": 14.225,
+            "end": 15.92,
+            "text": "cuando lo decida quien dirige la partida."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/voting.es.vtt"
+      }
+    },
+    {
+      "id": "caught",
+      "title": "Justice in Dustfall",
+      "src": "/media/narrator/caught.mp3",
+      "duration": 17.502,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Well played, detectives."
+          },
+          {
+            "start": 2.145,
+            "end": 4.16,
+            "text": "Dustfall found its culprit."
+          },
+          {
+            "start": 4.545,
+            "end": 6.8,
+            "text": "Take a look at the portrait, the votes,"
+          },
+          {
+            "start": 7.025,
+            "end": 8.8,
+            "text": "and the full evidence trail."
+          },
+          {
+            "start": 9.185,
+            "end": 11.82,
+            "text": "Your party awards celebrate sharp thinking"
+          },
+          {
+            "start": 11.825,
+            "end": 13.12,
+            "text": "and a little hard work."
+          },
+          {
+            "start": 13.505,
+            "end": 14.72,
+            "text": "Give yourselves a hand,"
+          },
+          {
+            "start": 15.065,
+            "end": 17.36,
+            "text": "and give the accused a friendly one too."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Bom trabalho, detetives."
+          },
+          {
+            "start": 2.145,
+            "end": 4.16,
+            "text": "Dustfall encontrou o culpado."
+          },
+          {
+            "start": 4.545,
+            "end": 6.8,
+            "text": "Confiram o retrato, os votos"
+          },
+          {
+            "start": 7.025,
+            "end": 8.8,
+            "text": "e toda a sequência de provas."
+          },
+          {
+            "start": 9.185,
+            "end": 11.82,
+            "text": "Os prêmios celebram o raciocínio afiado"
+          },
+          {
+            "start": 11.825,
+            "end": 13.12,
+            "text": "e a dedicação de vocês."
+          },
+          {
+            "start": 13.505,
+            "end": 14.72,
+            "text": "Uma salva de palmas para todos,"
+          },
+          {
+            "start": 15.065,
+            "end": 17.36,
+            "text": "e também para quem foi acusado, com amizade."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.76,
+            "text": "Bien jugado, detectives."
+          },
+          {
+            "start": 2.145,
+            "end": 4.16,
+            "text": "Dustfall encontró al culpable."
+          },
+          {
+            "start": 4.545,
+            "end": 6.8,
+            "text": "Miren el retrato, los votos"
+          },
+          {
+            "start": 7.025,
+            "end": 8.8,
+            "text": "y la cadena completa de pruebas."
+          },
+          {
+            "start": 9.185,
+            "end": 11.82,
+            "text": "Los premios celebran su buen razonamiento"
+          },
+          {
+            "start": 11.825,
+            "end": 13.12,
+            "text": "y el esfuerzo que han hecho."
+          },
+          {
+            "start": 13.505,
+            "end": 14.72,
+            "text": "Dense un aplauso"
+          },
+          {
+            "start": 15.065,
+            "end": 17.36,
+            "text": "y otro amistoso a la persona acusada."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/caught.es.vtt"
+      }
+    },
+    {
+      "id": "escaped-wrong",
+      "title": "The wrong trail",
+      "src": "/media/narrator/escaped-wrong.mp3",
+      "duration": 15.647,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 3.44,
+            "text": "Well, partners, that trail led to the wrong door."
+          },
+          {
+            "start": 3.905,
+            "end": 6.24,
+            "text": "The real culprit is on the screen now."
+          },
+          {
+            "start": 6.705,
+            "end": 8.64,
+            "text": "Compare the votes with the evidence,"
+          },
+          {
+            "start": 8.785,
+            "end": 11.12,
+            "text": "and see where the room took a wrong turn."
+          },
+          {
+            "start": 11.585,
+            "end": 12.72,
+            "text": "No hard feelings."
+          },
+          {
+            "start": 12.945,
+            "end": 15.52,
+            "text": "Even a good detective gets dust in their eyes."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 3.44,
+            "text": "Bem, parceiros, essa pista levou à pessoa errada."
+          },
+          {
+            "start": 3.905,
+            "end": 6.24,
+            "text": "O verdadeiro culpado está na tela agora."
+          },
+          {
+            "start": 6.705,
+            "end": 8.64,
+            "text": "Comparem os votos com as provas"
+          },
+          {
+            "start": 8.785,
+            "end": 11.12,
+            "text": "e vejam onde o grupo se enganou."
+          },
+          {
+            "start": 11.585,
+            "end": 12.72,
+            "text": "Sem ressentimentos."
+          },
+          {
+            "start": 12.945,
+            "end": 15.52,
+            "text": "Até um bom detetive perde uma pista de vez em quando."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 3.44,
+            "text": "Bueno, compañeros, esa pista los llevó a la puerta equivocada."
+          },
+          {
+            "start": 3.905,
+            "end": 6.24,
+            "text": "El verdadero culpable ya está en pantalla."
+          },
+          {
+            "start": 6.705,
+            "end": 8.64,
+            "text": "Comparen los votos con las pruebas"
+          },
+          {
+            "start": 8.785,
+            "end": 11.12,
+            "text": "y vean dónde se equivocó el grupo."
+          },
+          {
+            "start": 11.585,
+            "end": 12.72,
+            "text": "Sin rencores."
+          },
+          {
+            "start": 12.945,
+            "end": 15.52,
+            "text": "Hasta un buen detective puede perder de vista una pista."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/escaped-wrong.es.vtt"
+      }
+    },
+    {
+      "id": "escaped-tie",
+      "title": "A divided verdict",
+      "src": "/media/narrator/escaped-tie.mp3",
+      "duration": 15.752,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 3.6,
+            "text": "A divided town couldn't land one clear accusation."
+          },
+          {
+            "start": 4.065,
+            "end": 5.68,
+            "text": "The culprit kept their cover,"
+          },
+          {
+            "start": 5.785,
+            "end": 7.36,
+            "text": "and the core stayed hidden."
+          },
+          {
+            "start": 7.825,
+            "end": 10.24,
+            "text": "The screen has the answer, the votes,"
+          },
+          {
+            "start": 10.425,
+            "end": 12.32,
+            "text": "and the trail you can follow back."
+          },
+          {
+            "start": 12.785,
+            "end": 15.6,
+            "text": "Settle your friendly arguments with the evidence, partners."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 3.6,
+            "text": "A cidade dividida não chegou a uma acusação clara."
+          },
+          {
+            "start": 4.065,
+            "end": 5.68,
+            "text": "O culpado manteve o disfarce,"
+          },
+          {
+            "start": 5.785,
+            "end": 7.36,
+            "text": "e o núcleo continuou escondido."
+          },
+          {
+            "start": 7.825,
+            "end": 10.24,
+            "text": "A tela mostra a resposta, os votos"
+          },
+          {
+            "start": 10.425,
+            "end": 12.32,
+            "text": "e as pistas para reconstituir o caminho."
+          },
+          {
+            "start": 12.785,
+            "end": 15.6,
+            "text": "Resolvam suas discussões amigáveis com as provas, parceiros."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 3.6,
+            "text": "Un pueblo dividido no logró una acusación clara."
+          },
+          {
+            "start": 4.065,
+            "end": 5.68,
+            "text": "El culpable mantuvo su tapadera"
+          },
+          {
+            "start": 5.785,
+            "end": 7.36,
+            "text": "y el núcleo siguió oculto."
+          },
+          {
+            "start": 7.825,
+            "end": 10.24,
+            "text": "La pantalla muestra la respuesta, los votos"
+          },
+          {
+            "start": 10.425,
+            "end": 12.32,
+            "text": "y las pistas para reconstruir el camino."
+          },
+          {
+            "start": 12.785,
+            "end": 15.6,
+            "text": "Resuelvan sus debates amistosos con las pruebas, compañeros."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/escaped-tie.es.vtt"
+      }
+    },
+    {
+      "id": "timer-warning",
+      "title": "Thirty seconds remain",
+      "src": "/media/narrator/timer-warning.mp3",
+      "duration": 10.789,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 2.4,
+            "text": "Thirty seconds left on this act, partners."
+          },
+          {
+            "start": 2.705,
+            "end": 5.36,
+            "text": "Finish your search, lock in your case answer,"
+          },
+          {
+            "start": 5.505,
+            "end": 7.44,
+            "text": "and share the clue you've been holding."
+          },
+          {
+            "start": 7.905,
+            "end": 10.64,
+            "text": "Your game master decides when we ride on."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 2.4,
+            "text": "Restam trinta segundos neste ato, parceiros."
+          },
+          {
+            "start": 2.705,
+            "end": 5.36,
+            "text": "Terminem a busca e confirmem a resposta do caso."
+          },
+          {
+            "start": 5.505,
+            "end": 7.44,
+            "text": "Compartilhem a pista que guardaram até agora."
+          },
+          {
+            "start": 7.905,
+            "end": 10.64,
+            "text": "O mestre do jogo decide quando seguimos em frente."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 2.4,
+            "text": "Quedan treinta segundos en este acto, compañeros."
+          },
+          {
+            "start": 2.705,
+            "end": 5.36,
+            "text": "Terminen su búsqueda, confirmen la respuesta del caso"
+          },
+          {
+            "start": 5.505,
+            "end": 7.44,
+            "text": "y compartan la pista que han guardado."
+          },
+          {
+            "start": 7.905,
+            "end": 10.64,
+            "text": "Quien dirige la partida decide cuándo seguimos."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/timer-warning.es.vtt"
+      }
+    },
+    {
+      "id": "evidence",
+      "title": "A clue hits the board",
+      "src": "/media/narrator/evidence.mp3",
+      "duration": 10.057,
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 2.08,
+            "text": "Fresh evidence just hit the board."
+          },
+          {
+            "start": 2.545,
+            "end": 4.8,
+            "text": "Read it, compare it with what you know,"
+          },
+          {
+            "start": 4.945,
+            "end": 6.8,
+            "text": "and ask one good question."
+          },
+          {
+            "start": 7.265,
+            "end": 9.92,
+            "text": "Somebody's story may need a little repair."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 2.08,
+            "text": "Uma nova prova acabou de chegar ao quadro."
+          },
+          {
+            "start": 2.545,
+            "end": 4.8,
+            "text": "Leiam e comparem com o que já sabem."
+          },
+          {
+            "start": 4.945,
+            "end": 6.8,
+            "text": "Façam uma boa pergunta."
+          },
+          {
+            "start": 7.265,
+            "end": 9.92,
+            "text": "Talvez alguém precise rever a própria história."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 2.08,
+            "text": "Acaba de llegar una nueva prueba al tablero."
+          },
+          {
+            "start": 2.545,
+            "end": 4.8,
+            "text": "Léanla, compárenla con lo que ya saben"
+          },
+          {
+            "start": 4.945,
+            "end": 6.8,
+            "text": "y hagan una buena pregunta."
+          },
+          {
+            "start": 7.265,
+            "end": 9.92,
+            "text": "Puede que alguien tenga que retocar su historia."
+          }
+        ]
+      },
+      "captions": {
+        "es": "/media/narrator/evidence.es.vtt"
+      }
+    }
+  ]
+}

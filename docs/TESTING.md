@@ -1,0 +1,58 @@
+# Testing Dustfall with friends
+
+Public site: https://alibi-mystery-party.honeyspark.chatgpt.site
+
+## Quick developer run
+
+Open `/dev` and create a one-player rehearsal. It creates a real saved player plus a separate GM controller and opens the actual public game stage with a labelled developer toolbar. Open **Player phone** in another tab or join from a phone. Use **Next step** to start, reveal roles, enter each act, open voting, reveal results and return to the lobby. Pause/resume, skip/replay film and ordinary phone actions use the same authoritative mechanics as a party.
+
+This mode is explicitly marked rehearsal and persists across reset/reload. It is selected only when creating the test room. Ordinary rooms still require four guests and keep controls on the GM phone. Entering an ordinary room code in the developer page never grants test controls. Rehearsal mutations also require the saved master credential.
+
+With one player there is no other suspect to accuse, so use Next to reveal an empty ballot. To test actual phone voting, add sample guests in the lobby before starting, or invite another real phone. Sample guests ready/search/share/answer/vote automatically. The ordinary sealing/scoring/verdict rules still apply; the developer toolbar cannot force a particular verdict.
+
+Watch every existing movie at `/films`: opening, five act intros, voting, clue discovery, and all three endings. Select the caption language, play with native controls, and inspect the transcript. Endings contain spoilers. Films are hosted MP4 streams referenced by `public/media/cinematics.json`; they are not saved as local project MP4s. Narration MP3s and timed VTT caption files are local in `public/media/`.
+
+## Full party rehearsal
+
+Use a computer/TV, one GM phone and at least four real or sample guests. Phones can use cellular data or any Wi-Fi.
+
+1. Create an ordinary room. Pair the GM phone or create on `/host` and open its public screen. Enable TV sound once. Check fullscreen and English/Spanish/Portuguese TV captions.
+2. Have real guests select different languages before entering, set names and character gender preferences. Confirm all names and connection status on the stage. Record private recovery codes discreetly.
+3. Start. Each phone receives one unique character card; TV/GM show only public identities. Read Profile, Secrets and Missions. Ready up; test the GM's explicit continue override with one absent phone if desired.
+4. In every act, search one location, publish an assigned clue, submit one case answer and change suspicion. Verify checklist progress, live public evidence and anonymous suspicion. Pin/search public evidence on phones. Check multilingual live captions during a TV film and narrator cue.
+5. Pause: countdown, media and phone submissions should stop appropriately. Resume, add one minute, and advance only deliberately. Each next act resets current actions and keeps public evidence and prior answer feedback.
+6. Open final voting. Each player chooses another suspect, confirms, then cannot change the final vote. TV shows participation only. Leave one guest unvoted and verify the GM's explicit continue warning. Reveal once; tallies, culprit, solution and awards now appear.
+7. Start a new mystery and verify new game identity, cleared prior actions/votes and fresh roles, while local language and room recovery remain.
+
+## Recovery rehearsal
+
+Run these on a disposable room, not a party already in progress. See PLAYER_RECOVERY.md for exact behavior.
+
+- Join, step away, return through saved seat; verify no duplicate identity. Release a lobby seat, confirm capacity returns, then join anew.
+- Open the same player in two tabs. Close one; the other stays connected. Close both; the seat becomes away and still resumes.
+- After starting, note the character and complete search/share/answer. Recover using the private code on another device. Compare identity, clues, score and accepted actions. Old device access/code must stop working.
+- Name the GM, nominate a backup and offer an explicit handoff. Accept only on the selected phone; verify that player's character remains accessible and old master cannot command.
+- Disconnect every GM tab. Reconnect before sixty seconds to cancel fallback. Disconnect again; after sixty seconds, only the eligible real connected guest should be able to confirm takeover. Demos and the public TV have no takeover action.
+- Test no internet/phone sleep and return. Check away/connected badges, frozen network buttons, no automatic phase change, and no duplicated points/votes after retry.
+- Reload the TV and re-enable sound. Verify current film/caption handling and public-only content.
+
+## Automated regression
+
+Use Node24. Install dependencies only if absent. Run:
+
+```sh
+npm test
+npm run build
+node scripts/verify-online.mjs http://localhost:3000
+node scripts/verify-languages.mjs http://localhost:3000
+node scripts/verify-extra-minute.mjs http://localhost:3000
+node scripts/verify-recovery.mjs http://localhost:3000
+node scripts/verify-rehearsal.mjs http://localhost:3000
+node scripts/verify-scenarios.mjs http://localhost:3000
+```
+
+Replace the origin with the public site for hosted verification. Scripts create disposable twelve-hour rooms and print only safe counts/status. Unit tests also exercise independent restored engine/service instances and both memory/SQLite repositories with fake-clock15/60/120second boundaries and CAS races. HTTP scripts verify actual anonymous browser→API behavior, but do not replace real mobile/network/media browser testing.
+
+See `PARTY_SCENARIOS.md` for the timing/outage matrix, concurrent GM transitions, delayed recovery responses, missed new-game confirmations, and the local-only browser fault proxy. Refresh existing game tabs after deploying an update so they receive the newest client protections.
+
+`npm run dev` deliberately uses an in-memory local backend and restarts on source changes, clearing local rooms. For an uninterrupted local rehearsal, first build, then run `PORT=3001 npm start` and use that stable origin. The hosted site stores rooms in managed D1 and is not affected by local edits/restarts.

@@ -1,0 +1,33 @@
+{
+  "name": "alibi-party",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false server/index.ts",
+    "build": "vite build --outDir .web-dist && node scripts/build-online.mjs && tsc --noEmit",
+    "start": "NODE_ENV=production tsx server/index.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "express": "^5.1.0",
+    "lucide-react": "latest",
+    "qrcode.react": "^4.2.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "tsx": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "esbuild": "^0.28.2"
+  }
+}

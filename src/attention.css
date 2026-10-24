@@ -1,0 +1,152 @@
+/* A shared ten-second gathering moment. No player information is shown here. */
+.attention-overlay {
+  --attention-violet: #170e38;
+  --attention-indigo: #30205c;
+  --attention-mint: #a5ffce;
+  --attention-yellow: #ffe178;
+  --attention-cream: #fff0cb;
+  --attention-coral: #ff6b87;
+  color: var(--attention-cream);
+  font-family: 'DM Sans', sans-serif;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+html:has(.rehearsal-toolbar) .attention--host { top:var(--developer-toolbar-height,144px); padding:20px; }
+html:has(.rehearsal-toolbar) .attention--host .attention-countdown { width:clamp(150px,30vh,260px); }
+html:has(.rehearsal-toolbar) .attention--host .attention-number { font-size:clamp(100px,19vh,180px); }
+html:has(.rehearsal-toolbar) .attention--host .attention-copy h2 { font-size:clamp(38px,5vw,70px); }
+.attention--host,
+.attention--phone {
+  position: fixed;
+  z-index: 85;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at 50% 30%, #30205ce6, #170e38f5 75%), url('/assets/dustfall-stage.webp') center / cover, var(--attention-violet);
+}
+.attention--host::before,
+.attention--phone::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  pointer-events: none;
+  border: 1px solid #a5ffce45;
+  border-radius: 18px;
+}
+.attention-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 5vw, 70px);
+  width: min(1120px, 100%);
+  min-width: 0;
+}
+.attention-countdown {
+  width: clamp(190px, 27vw, 350px);
+  aspect-ratio: 1;
+  flex: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--attention-yellow);
+}
+.attention-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.attention-ring circle { fill: none; stroke-width: 3; }
+.attention-ring-track { stroke: #a5ffce24; }
+.attention-ring-progress { stroke: var(--attention-mint); stroke-linecap: round; transition: stroke-dashoffset .25s linear; }
+.attention-number {
+  display: block;
+  font: 900 clamp(110px, 18vw, 230px)/.9 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -4px;
+  text-shadow: 5px 7px 0 #130c25;
+  animation: attention-number-arrives .28s cubic-bezier(.16, .9, .3, 1.2) both;
+}
+.attention-seconds {
+  margin-top: 15px;
+  color: var(--attention-mint);
+  font-size: clamp(10px, 1.3vw, 14px);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.attention-copy { min-width: 0; }
+.attention-eyeline { display: flex; align-items: center; gap: 9px; color: var(--attention-mint); font-size: clamp(10px, 1.3vw, 14px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.attention-eyeline > svg { flex: none; }
+.attention-copy h2 {
+  margin: 18px 0;
+  color: var(--attention-yellow);
+  font: 900 clamp(45px, 7vw, 100px)/.94 var(--arcade-display, 'Barlow Condensed', Impact, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  text-wrap: balance;
+  text-shadow: 4px 5px 0 #130c25;
+  overflow-wrap: normal;
+}
+.attention-copy p { margin: 0; max-width: 40ch; color: var(--attention-cream); font-size: clamp(15px, 2vw, 22px); line-height: 1.6; text-wrap: pretty; }
+.attention-status { margin-top: 28px; display: flex; align-items: center; gap: 7px; color: #d8c6f8; font-size: 11px; line-height: 1.5; }
+.attention-status > svg { flex: none; }
+.attention-screen-mark { position: absolute; right: 0; bottom: -85px; color: #a5ffce45; }
+.attention--phone .attention-stage { flex-direction: column; gap: 22px; max-width: 440px; text-align: center; }
+.attention--phone .attention-countdown { width: min(58vw, 250px); }
+.attention--phone .attention-number { font-size: clamp(100px, 34vw, 160px); }
+.attention--phone .attention-copy h2 { font-size: clamp(38px, 12vw, 58px); margin: 16px 0; }
+.attention--phone .attention-copy p { font-size: 15px; }
+.attention--phone .attention-eyeline,
+.attention--phone .attention-status { justify-content: center; }
+.attention--phone .attention-status { margin-top: 24px; }
+.attention--phone .attention-screen-mark { display: none; }
+.attention--master {
+  position: relative;
+  border: 2px solid var(--attention-mint);
+  border-radius: 14px;
+  background: linear-gradient(120deg, var(--attention-indigo), var(--attention-violet));
+  padding: 18px;
+  margin: 16px 0 22px;
+  box-shadow: 4px 5px 0 #130c25;
+}
+.attention--master .attention-stage { gap: 18px; }
+.attention--master .attention-countdown { width: 94px; }
+.attention--master .attention-number { font-size: 64px; letter-spacing: -1px; text-shadow: 2px 3px 0 #130c25; }
+.attention--master .attention-seconds { font-size: 8px; letter-spacing: 1px; margin-top: 5px; }
+.attention--master .attention-eyeline { font-size: 9px; letter-spacing: 1px; gap: 6px; }
+.attention--master .attention-eyeline > svg { width: 13px; height: 13px; }
+.attention--master .attention-copy h2 { font-size: 30px; margin: 8px 0; text-shadow: 2px 3px 0 #130c25; }
+.attention--master .attention-copy p { font-size: 11px; line-height: 1.5; }
+.attention--master .attention-status { margin-top: 10px; font-size: 10px; }
+.attention-overlay.is-paused .attention-number,
+.attention-overlay.is-reconnecting .attention-number { animation: none; }
+.attention-overlay.is-paused .attention-ring-progress { stroke: var(--attention-yellow); }
+.attention-overlay.is-reconnecting .attention-status { color: var(--attention-coral); }
+@keyframes attention-number-arrives { from { transform: translateY(5px) scale(.93); } to { transform: translateY(0) scale(1); } }
+@media (max-width: 720px) {
+  .attention--host .attention-stage { flex-direction: column; gap: 22px; max-width: 480px; text-align: center; }
+  .attention--host .attention-eyeline,
+  .attention--host .attention-status { justify-content: center; }
+  .attention--host .attention-screen-mark { display: none; }
+  .attention--host .attention-copy h2 { font-size: clamp(40px, 11vw, 65px); }
+}
+@media (max-height: 620px) {
+  .attention--phone .attention-stage { flex-direction: row; max-width: 650px; gap: 18px; text-align: left; }
+  .attention--phone .attention-countdown { width: min(34vw, 160px); }
+  .attention--phone .attention-number { font-size: 100px; }
+  .attention--phone .attention-copy h2 { font-size: clamp(27px, 7vw, 44px); }
+  .attention--phone .attention-copy p { font-size: 12px; }
+  .attention--phone .attention-eyeline,
+  .attention--phone .attention-status { justify-content: flex-start; }
+  .attention--phone .attention-status { margin-top: 15px; }
+}
+@media (max-width: 370px) {
+  .attention--master { padding: 14px; }
+  .attention--master .attention-stage { gap: 12px; }
+  .attention--master .attention-countdown { width: 76px; }
+  .attention--master .attention-number { font-size: 52px; }
+  .attention--master .attention-copy h2 { font-size: 25px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .attention-overlay *, .attention-overlay *::before, .attention-overlay *::after { animation: none !important; transition: none !important; }
+}

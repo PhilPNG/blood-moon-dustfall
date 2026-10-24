@@ -1,0 +1,900 @@
+{
+  "version": 1,
+  "clips": [
+    {
+      "id": "opening",
+      "title": "Blood Moon over Dustfall",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/fda1f894-56ad-487d-81f7-0b71a1f7b02e.mp4",
+      "duration": 18.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/opening.en.vtt",
+        "ptBR": "/media/captions/opening.pt-BR.vtt",
+        "es": "/media/captions/opening.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.54,
+            "text": "[Desert wind]\nDustfall."
+          },
+          {
+            "start": 1.92,
+            "end": 3.8,
+            "text": "Halloween eighteen eighty-seven."
+          },
+          {
+            "start": 4.58,
+            "end": 7.14,
+            "text": "A fallen star brought strangers to the frontier."
+          },
+          {
+            "start": 7.58,
+            "end": 9.98,
+            "text": "Tonight a peace treaty promised a new beginning."
+          },
+          {
+            "start": 10.35,
+            "end": 12.04,
+            "text": "[Electrical snap]\nThen the lights went out."
+          },
+          {
+            "start": 12.62,
+            "end": 13.68,
+            "text": "The mayor is dead."
+          },
+          {
+            "start": 14.04,
+            "end": 15.34,
+            "text": "The power core is gone."
+          },
+          {
+            "start": 15.8,
+            "end": 18.042,
+            "text": "[Containment field hums]\nOne of you is hiding the truth."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.54,
+            "text": "[Vento no deserto]\nDustfall."
+          },
+          {
+            "start": 1.92,
+            "end": 3.8,
+            "text": "Halloween de mil oitocentos e oitenta e sete."
+          },
+          {
+            "start": 4.58,
+            "end": 7.14,
+            "text": "Uma estrela caída trouxe estrangeiros para a fronteira."
+          },
+          {
+            "start": 7.58,
+            "end": 9.98,
+            "text": "Esta noite, um tratado de paz prometia um novo começo."
+          },
+          {
+            "start": 10.35,
+            "end": 12.04,
+            "text": "[Estalo elétrico]\nEntão as luzes se apagaram."
+          },
+          {
+            "start": 12.62,
+            "end": 13.68,
+            "text": "O prefeito está morto."
+          },
+          {
+            "start": 14.04,
+            "end": 15.34,
+            "text": "O núcleo de energia desapareceu."
+          },
+          {
+            "start": 15.8,
+            "end": 18.042,
+            "text": "[O campo de contenção zumbe]\nUm de vocês está escondendo a verdade."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.54,
+            "text": "[Viento del desierto]\nDustfall."
+          },
+          {
+            "start": 1.92,
+            "end": 3.8,
+            "text": "Halloween de mil ochocientos ochenta y siete."
+          },
+          {
+            "start": 4.58,
+            "end": 7.14,
+            "text": "Una estrella caída trajo forasteros a la frontera."
+          },
+          {
+            "start": 7.58,
+            "end": 9.98,
+            "text": "Esta noche, un tratado de paz prometía un nuevo comienzo."
+          },
+          {
+            "start": 10.35,
+            "end": 12.04,
+            "text": "[Chasquido eléctrico]\nEntonces se apagaron las luces."
+          },
+          {
+            "start": 12.62,
+            "end": 13.68,
+            "text": "El alcalde ha muerto."
+          },
+          {
+            "start": 14.04,
+            "end": 15.34,
+            "text": "El núcleo de energía ha desaparecido."
+          },
+          {
+            "start": 15.8,
+            "end": 18.042,
+            "text": "[Zumbido del campo de contención]\nUno de ustedes oculta la verdad."
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-1",
+      "title": "A Shot in the Eclipse",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/8643e0c5-0b3f-4603-83af-e41466d2f4ca.mp4",
+      "duration": 8.064,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/act-1.en.vtt",
+        "ptBR": "/media/captions/act-1.pt-BR.vtt",
+        "es": "/media/captions/act-1.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 0.82,
+            "text": "[Paper rustles]"
+          },
+          {
+            "start": 0.94,
+            "end": 2.48,
+            "text": "A shot in the Eclipse."
+          },
+          {
+            "start": 2.98,
+            "end": 4.02,
+            "text": "The mayor is dead."
+          },
+          {
+            "start": 4.64,
+            "end": 5.66,
+            "text": "Examine the evidence."
+          },
+          {
+            "start": 6.1,
+            "end": 7.84,
+            "text": "What killed him, and when?"
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 0.82,
+            "text": "[Papel farfalha]"
+          },
+          {
+            "start": 0.94,
+            "end": 2.48,
+            "text": "Um tiro no Eclipse."
+          },
+          {
+            "start": 2.98,
+            "end": 4.02,
+            "text": "O prefeito está morto."
+          },
+          {
+            "start": 4.64,
+            "end": 5.66,
+            "text": "Examinem as provas."
+          },
+          {
+            "start": 6.1,
+            "end": 7.84,
+            "text": "O que o matou, e quando?"
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 0.82,
+            "text": "[Crujido de papel]"
+          },
+          {
+            "start": 0.94,
+            "end": 2.48,
+            "text": "Un disparo en el Eclipse."
+          },
+          {
+            "start": 2.98,
+            "end": 4.02,
+            "text": "El alcalde ha muerto."
+          },
+          {
+            "start": 4.64,
+            "end": 5.66,
+            "text": "Examinen las pruebas."
+          },
+          {
+            "start": 6.1,
+            "end": 7.84,
+            "text": "¿Qué lo mató y cuándo?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-2",
+      "title": "The Black Star Bargain",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/c9c177b8-523f-47e3-a44e-e933886ba8b1.mp4",
+      "duration": 8.064,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/act-2.en.vtt",
+        "ptBR": "/media/captions/act-2.pt-BR.vtt",
+        "es": "/media/captions/act-2.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 0.94,
+            "text": "[Telegraph clicks]"
+          },
+          {
+            "start": 1.04,
+            "end": 3.88,
+            "text": "Black Star offered a fortune for the living core."
+          },
+          {
+            "start": 4.34,
+            "end": 5.06,
+            "text": "Follow the bargain."
+          },
+          {
+            "start": 5.7,
+            "end": 7.68,
+            "text": "Who needed the treaty to remain unsigned?"
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 0.94,
+            "text": "[Cliques do telégrafo]"
+          },
+          {
+            "start": 1.04,
+            "end": 3.88,
+            "text": "Black Star ofereceu uma fortuna pelo núcleo vivo."
+          },
+          {
+            "start": 4.34,
+            "end": 5.06,
+            "text": "Sigam a negociação."
+          },
+          {
+            "start": 5.7,
+            "end": 7.68,
+            "text": "Quem precisava que o tratado continuasse sem assinatura?"
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 0.94,
+            "text": "[Clics del telégrafo]"
+          },
+          {
+            "start": 1.04,
+            "end": 3.88,
+            "text": "Black Star ofreció una fortuna por el núcleo vivo."
+          },
+          {
+            "start": 4.34,
+            "end": 5.06,
+            "text": "Sigan la negociación."
+          },
+          {
+            "start": 5.7,
+            "end": 7.68,
+            "text": "¿Quién necesitaba que el tratado siguiera sin firmarse?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-3",
+      "title": "What the Lantern Kept",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/b7f6776d-c55f-472a-87f0-d96f2ba90463.mp4",
+      "duration": 8.064,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/act-3.en.vtt",
+        "ptBR": "/media/captions/act-3.pt-BR.vtt",
+        "es": "/media/captions/act-3.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 0.56,
+            "text": "[Recorder clicks]"
+          },
+          {
+            "start": 0.66,
+            "end": 2.44,
+            "text": "The lantern kept a record."
+          },
+          {
+            "start": 3.2,
+            "end": 5.48,
+            "text": "Compare the independent color and symbol traces."
+          },
+          {
+            "start": 6.04,
+            "end": 7.74,
+            "text": "Which public seal matches both?"
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 0.56,
+            "text": "[O gravador clica]"
+          },
+          {
+            "start": 0.66,
+            "end": 2.44,
+            "text": "A lanterna guardou um registro."
+          },
+          {
+            "start": 3.2,
+            "end": 5.48,
+            "text": "Comparem os vestígios independentes de cor e símbolo."
+          },
+          {
+            "start": 6.04,
+            "end": 7.74,
+            "text": "Qual selo público corresponde aos dois?"
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 0.56,
+            "text": "[Clic de la grabadora]"
+          },
+          {
+            "start": 0.66,
+            "end": 2.44,
+            "text": "La linterna guardó un registro."
+          },
+          {
+            "start": 3.2,
+            "end": 5.48,
+            "text": "Comparen los rastros independientes de color y símbolo."
+          },
+          {
+            "start": 6.04,
+            "end": 7.74,
+            "text": "¿Qué sello público coincide con ambos?"
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-4",
+      "title": "The Minute Between",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/4c6c8b95-5372-4fcb-8625-0cba321484f6.mp4",
+      "duration": 6.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/act-4.en.vtt",
+        "ptBR": "/media/captions/act-4.pt-BR.vtt",
+        "es": "/media/captions/act-4.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 3.15,
+            "text": "Blackout. Strike. Staged shot. Theft.\n[Mechanical clicks, crackle, rattle, hum]"
+          },
+          {
+            "start": 3.48,
+            "end": 4.66,
+            "text": "Rebuild those four minutes."
+          },
+          {
+            "start": 4.88,
+            "end": 5.92,
+            "text": "The order is the evidence."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 3.15,
+            "text": "Apagão. Descarga. Tiro encenado. Roubo.\n[Cliques, estalo, chocalho e zumbido]"
+          },
+          {
+            "start": 3.48,
+            "end": 4.66,
+            "text": "Reconstruam esses quatro minutos."
+          },
+          {
+            "start": 4.88,
+            "end": 5.92,
+            "text": "A ordem é a prova."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 3.15,
+            "text": "Apagón. Ataque. Disparo simulado. Robo.\n[Clics mecánicos, chasquidos, traqueteo y zumbido]"
+          },
+          {
+            "start": 3.48,
+            "end": 4.66,
+            "text": "Reconstruyan esos cuatro minutos."
+          },
+          {
+            "start": 4.88,
+            "end": 5.92,
+            "text": "El orden es la prueba."
+          }
+        ]
+      }
+    },
+    {
+      "id": "act-5",
+      "title": "Before the Last Bell",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/6271a722-90a0-4673-9d98-b3f2a73dfba3.mp4",
+      "duration": 6.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/act-5.en.vtt",
+        "ptBR": "/media/captions/act-5.pt-BR.vtt",
+        "es": "/media/captions/act-5.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 2.12,
+            "text": "[A bell tolls]\nThe buyer has withdrawn."
+          },
+          {
+            "start": 2.62,
+            "end": 4.36,
+            "text": "The core is still inside Dustfall."
+          },
+          {
+            "start": 4.82,
+            "end": 5.74,
+            "text": "Make your final case."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 2.12,
+            "text": "[Um sino toca]\nO comprador desistiu."
+          },
+          {
+            "start": 2.62,
+            "end": 4.36,
+            "text": "O núcleo ainda está em Dustfall."
+          },
+          {
+            "start": 4.82,
+            "end": 5.74,
+            "text": "Apresentem sua conclusão."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 2.12,
+            "text": "[Tañido de una campana]\nEl comprador se ha retirado."
+          },
+          {
+            "start": 2.62,
+            "end": 4.36,
+            "text": "El núcleo sigue dentro de Dustfall."
+          },
+          {
+            "start": 4.82,
+            "end": 5.74,
+            "text": "Presenten su teoría final."
+          }
+        ]
+      }
+    },
+    {
+      "id": "voting",
+      "title": "Sealed Accusations",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/92c2a8e8-cead-4704-a8b7-781703c4fe8a.mp4",
+      "duration": 6.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/voting.en.vtt",
+        "ptBR": "/media/captions/voting.pt-BR.vtt",
+        "es": "/media/captions/voting.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.3,
+            "text": "[Paper rustles]\nOne name."
+          },
+          {
+            "start": 1.74,
+            "end": 2.74,
+            "text": "One sealed vote."
+          },
+          {
+            "start": 3.22,
+            "end": 4.14,
+            "text": "Choose another player."
+          },
+          {
+            "start": 4.62,
+            "end": 5.9,
+            "text": "Then let the evidence speak."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.3,
+            "text": "[Papel farfalha]\nUm nome."
+          },
+          {
+            "start": 1.74,
+            "end": 2.74,
+            "text": "Um voto secreto."
+          },
+          {
+            "start": 3.22,
+            "end": 4.14,
+            "text": "Escolham outro jogador."
+          },
+          {
+            "start": 4.62,
+            "end": 5.9,
+            "text": "Depois, deixem as provas falar."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.3,
+            "text": "[Crujido de papel]\nUn nombre."
+          },
+          {
+            "start": 1.74,
+            "end": 2.74,
+            "text": "Un voto sellado."
+          },
+          {
+            "start": 3.22,
+            "end": 4.14,
+            "text": "Elijan a otro jugador."
+          },
+          {
+            "start": 4.62,
+            "end": 5.9,
+            "text": "Después, dejen que hablen las pruebas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "clue",
+      "title": "A New Lead",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/04994c47-deba-40db-ac0e-f3b4085d1d5c.mp4",
+      "duration": 4.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/clue.en.vtt",
+        "ptBR": "/media/captions/clue.pt-BR.vtt",
+        "es": "/media/captions/clue.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 0.6,
+            "text": "[Discovery chime]"
+          },
+          {
+            "start": 0.72,
+            "end": 1.78,
+            "text": "A new lead."
+          },
+          {
+            "start": 1.9,
+            "end": 3.2,
+            "text": "Compare it with what you know."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 0.6,
+            "text": "[Toque de descoberta]"
+          },
+          {
+            "start": 0.72,
+            "end": 1.78,
+            "text": "Uma nova pista."
+          },
+          {
+            "start": 1.9,
+            "end": 3.2,
+            "text": "Comparem com o que vocês já sabem."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 0.6,
+            "text": "[Campanilla de descubrimiento]"
+          },
+          {
+            "start": 0.72,
+            "end": 1.78,
+            "text": "Una nueva pista."
+          },
+          {
+            "start": 1.9,
+            "end": 3.2,
+            "text": "Compárenla con lo que ya saben."
+          }
+        ]
+      }
+    },
+    {
+      "id": "caught",
+      "title": "The Truth Holds",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/a4fb873a-5a59-41ea-95bd-b1f9f3465fab.mp4",
+      "duration": 8.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/caught.en.vtt",
+        "ptBR": "/media/captions/caught.pt-BR.vtt",
+        "es": "/media/captions/caught.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.35,
+            "text": "[Core clicks into place]\nThe evidence held."
+          },
+          {
+            "start": 1.48,
+            "end": 4.2,
+            "text": "The culprit is caught and the core is recovered."
+          },
+          {
+            "start": 4.78,
+            "end": 7.86,
+            "text": "Beneath the fading blood moon, peace has another chance."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.35,
+            "text": "[O núcleo se encaixa]\nAs provas se sustentaram."
+          },
+          {
+            "start": 1.48,
+            "end": 4.2,
+            "text": "O culpado foi pego, e o núcleo foi recuperado."
+          },
+          {
+            "start": 4.78,
+            "end": 7.86,
+            "text": "Sob a lua de sangue que se apaga, a paz ganha outra chance."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.35,
+            "text": "[El núcleo encaja con un clic]\nLas pruebas se sostuvieron."
+          },
+          {
+            "start": 1.48,
+            "end": 4.2,
+            "text": "El culpable está atrapado y el núcleo, recuperado."
+          },
+          {
+            "start": 4.78,
+            "end": 7.86,
+            "text": "Bajo la luna de sangre que se desvanece, la paz tiene otra oportunidad."
+          }
+        ]
+      }
+    },
+    {
+      "id": "escaped-wrong",
+      "title": "An Innocent Blamed",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/4a99f1de-3be0-45a1-bc85-76e11c5b1eab.mp4",
+      "duration": 8.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/escaped-wrong.en.vtt",
+        "ptBR": "/media/captions/escaped-wrong.pt-BR.vtt",
+        "es": "/media/captions/escaped-wrong.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.44,
+            "text": "An innocent takes the blame."
+          },
+          {
+            "start": 1.46,
+            "end": 1.95,
+            "text": "[Wind rises]"
+          },
+          {
+            "start": 1.96,
+            "end": 4.2,
+            "text": "The real culprit hides among familiar faces."
+          },
+          {
+            "start": 4.82,
+            "end": 7.94,
+            "text": "The core remains hidden and Dustfall waits for the truth."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.44,
+            "text": "Um inocente leva a culpa."
+          },
+          {
+            "start": 1.46,
+            "end": 1.95,
+            "text": "[O vento aumenta]"
+          },
+          {
+            "start": 1.96,
+            "end": 4.2,
+            "text": "O verdadeiro culpado se esconde entre rostos familiares."
+          },
+          {
+            "start": 4.82,
+            "end": 7.94,
+            "text": "O núcleo continua escondido, e Dustfall espera pela verdade."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.44,
+            "text": "Un inocente carga con la culpa."
+          },
+          {
+            "start": 1.46,
+            "end": 1.95,
+            "text": "[El viento arrecia]"
+          },
+          {
+            "start": 1.96,
+            "end": 4.2,
+            "text": "El verdadero culpable se esconde entre rostros conocidos."
+          },
+          {
+            "start": 4.82,
+            "end": 7.94,
+            "text": "El núcleo sigue oculto y Dustfall espera la verdad."
+          }
+        ]
+      }
+    },
+    {
+      "id": "escaped-tie",
+      "title": "A Town Divided",
+      "src": "https://d2ol7oe51mr4n9.cloudfront.net/user_3Jbj3Eu3K5yyf4RJBsM47mX7Q3X/60d9a78d-6b6f-45e9-ab15-6fde87b6632d.mp4",
+      "duration": 8.042,
+      "poster": "/assets/dustfall-stage.webp",
+      "captions": {
+        "en": "/media/captions/escaped-tie.en.vtt",
+        "ptBR": "/media/captions/escaped-tie.pt-BR.vtt",
+        "es": "/media/captions/escaped-tie.es.vtt"
+      },
+      "cues": {
+        "en": [
+          {
+            "start": 0,
+            "end": 1.58,
+            "text": "[Wind through the doors]\nThe town is divided."
+          },
+          {
+            "start": 2.4,
+            "end": 5.36,
+            "text": "Without a clear verdict, the culprit remains hidden among you."
+          },
+          {
+            "start": 5.76,
+            "end": 6.94,
+            "text": "The core is still here."
+          },
+          {
+            "start": 7.34,
+            "end": 8.02,
+            "text": "So is the truth."
+          }
+        ],
+        "ptBR": [
+          {
+            "start": 0,
+            "end": 1.58,
+            "text": "[Vento entre as portas]\nA cidade está dividida."
+          },
+          {
+            "start": 2.4,
+            "end": 5.36,
+            "text": "Sem um veredito claro, o culpado continua escondido entre vocês."
+          },
+          {
+            "start": 5.76,
+            "end": 6.94,
+            "text": "O núcleo ainda está aqui."
+          },
+          {
+            "start": 7.34,
+            "end": 8.02,
+            "text": "E a verdade também."
+          }
+        ],
+        "es": [
+          {
+            "start": 0,
+            "end": 1.58,
+            "text": "[Viento entre las puertas]\nEl pueblo está dividido."
+          },
+          {
+            "start": 2.4,
+            "end": 5.36,
+            "text": "Sin un veredicto claro, el culpable sigue oculto entre ustedes."
+          },
+          {
+            "start": 5.76,
+            "end": 6.94,
+            "text": "El núcleo sigue aquí."
+          },
+          {
+            "start": 7.34,
+            "end": 8.02,
+            "text": "Y la verdad también."
+          }
+        ]
+      }
+    }
+  ]
+}
