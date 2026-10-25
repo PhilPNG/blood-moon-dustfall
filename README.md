@@ -169,7 +169,7 @@ For a realistic rehearsal, use a TV, the GM phone and four real or sample guests
 
 ## Develop locally
 
-Use **Node.js 24**. Node 22.12+ can run the app; the regression suite also uses Node 24’s SQLite support.
+Use **Node.js 24.22.1 or a newer 24.x release**. This minimum includes the [October 21, 2026 security fixes](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases); the regression suite also uses Node 24's SQLite support. CI pins 24.22.1 so an older cached Node 24 cannot be selected.
 
 ```sh
 npm ci
