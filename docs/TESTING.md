@@ -48,7 +48,7 @@ Run these on a disposable room, not a party already in progress. See PLAYER_RECO
 
 ## Automated regression
 
-Use Node24. Install dependencies only if absent. Run:
+Use Node.js 24.22.1 or a newer 24.x release, matching the security minimum in `package.json`. Install dependencies only if absent. Run:
 
 ```sh
 npm test
